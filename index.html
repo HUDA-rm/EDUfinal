@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDU — Learn Without Limits</title>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.2.0/css/line.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c14;
+      --bg1: #0d1425;
+      --bg2: #111b30;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f97316;
+      --white: #f0f4ff;
+      --muted: rgba(240,244,255,0.55);
+      --border: rgba(0,229,255,0.12);
+      --glow: 0 0 40px rgba(0,229,255,0.15);
+      --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── ANIMATED BG ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124,58,237,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0,229,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: float-particle linear infinite;
+      opacity: 0;
+    }
+    @keyframes float-particle {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 0;
+      transition: var(--transition);
+    }
+    nav.scrolled {
+      background: rgba(8,12,20,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 0;
+    }
+    .nav__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -1px;
+    }
+    .nav__logo span { color: var(--accent); }
+
+    .nav__links {
+      display: flex;
+      list-style: none;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .nav__links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: var(--transition);
+      position: relative;
+    }
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+    .nav__links a:hover { color: var(--white); }
+    .nav__links a:hover::after { width: 100%; }
+
+    .nav__cta {
+      background: var(--accent);
+      color: var(--bg) !important;
+      padding: 0.6rem 1.4rem !important;
+      border-radius: 50px;
+      font-weight: 700 !important;
+    }
+    .nav__cta::after { display: none !important; }
+    .nav__cta:hover { background: #33eaff !important; transform: translateY(-1px); box-shadow: 0 8px 25px rgba(0,229,255,0.4); }
+    .nav__user{display:flex;align-items:center;gap:.75rem;position:relative;}
+    .nav__user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;color:var(--white);cursor:pointer;border:2px solid var(--border);transition:var(--transition);}
+    .nav__user-avatar:hover{border-color:var(--accent);box-shadow:0 0 15px rgba(0,229,255,.3);}
+    .nav__user-name{font-size:.9rem;font-weight:500;color:var(--white);}
+    .nav__dropdown{position:absolute;top:calc(100% + 12px);right:0;background:var(--bg1);border:1px solid var(--border);border-radius:12px;min-width:160px;padding:.5rem;box-shadow:0 20px 50px rgba(0,0,0,.5);opacity:0;pointer-events:none;transform:translateY(-8px);transition:var(--transition);}
+    .nav__dropdown.open{opacity:1;pointer-events:all;transform:translateY(0);}
+    .nav__dropdown a,.nav__dropdown button{display:flex;align-items:center;gap:.6rem;width:100%;padding:.55rem .9rem;border-radius:8px;font-size:.88rem;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:none;transition:var(--transition);font-family:'DM Sans',sans-serif;}
+    .nav__dropdown a:hover,.nav__dropdown button:hover{background:rgba(0,229,255,.07);color:var(--white);}
+    .nav__dropdown .logout-btn{color:rgba(249,115,22,.75);}
+    .nav__dropdown .logout-btn:hover{background:rgba(249,115,22,.1);color:var(--accent3);}
+
+    .nav__toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 8rem 2rem 4rem;
+    }
+    .hero__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.2);
+      color: var(--accent);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 1.5rem;
+      animation: fadeSlideUp 0.8s ease forwards;
+    }
+    .hero__badge .dot {
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse { 0%,100% { transform: scale(1); opacity:1; } 50% { transform: scale(1.6); opacity:0.5; } }
+
+    .hero__title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 1.5rem;
+      animation: fadeSlideUp 0.8s 0.2s ease both;
+    }
+    .hero__title .line { display: block; overflow: hidden; }
+    .hero__title .accent { color: var(--accent); }
+    .hero__title .accent2 { color: var(--accent3); }
+
+    .hero__text {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      animation: fadeSlideUp 0.8s 0.4s ease both;
+    }
+    .hero__actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeSlideUp 0.8s 0.6s ease both;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      box-shadow: 0 0 30px rgba(0,229,255,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(0,229,255,0.5); background: #33eaff; }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,229,255,0.05); transform: translateY(-3px); }
+
+    .hero__stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+      animation: fadeSlideUp 0.8s 0.8s ease both;
+    }
+    .stat__number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--white);
+      display: block;
+      line-height: 1;
+    }
+    .stat__label { color: var(--muted); font-size: 0.82rem; margin-top: 0.3rem; }
+
+    /* Hero Visual */
+    .hero__visual {
+      position: relative;
+      animation: fadeSlideUp 0.8s 0.3s ease both;
+    }
+    .hero__card-main {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--glow), 0 40px 80px rgba(0,0,0,0.4);
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+    .hero__card-thumb {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+    .hero__card-thumb img { width:100%; height:100%; object-fit:cover; }
+    .hero__card-tag {
+      display: inline-block;
+      background: rgba(0,229,255,0.1);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.7rem;
+      border-radius: 50px;
+      margin-bottom: 0.7rem;
+      letter-spacing: 0.5px;
+    }
+    .hero__card-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .hero__card-meta { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.82rem; }
+    .hero__card-progress { margin-top: 1rem; }
+    .hero__card-progress-bar { width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:5px; overflow:hidden; }
+    .hero__card-progress-fill { height:100%; width:65%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius:5px; animation: progress-grow 2s 1s ease both; }
+    @keyframes progress-grow { from { width: 0; } to { width: 65%; } }
+
+    .hero__float-card {
+      position: absolute;
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+    .float-card-1 { top: -20px; right: -20px; animation: float 5s 1s ease-in-out infinite; }
+    .float-card-2 { bottom: 30px; left: -30px; animation: float 5.5s 0.5s ease-in-out infinite; }
+    .float-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .float-icon.green { background: rgba(0,229,128,0.15); color: #00e580; }
+    .float-icon.orange { background: rgba(249,115,22,0.15); color: var(--accent3); }
+
+    /* ─── SECTION COMMON ─── */
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .section-pad { padding: 6rem 0; }
+
+    .section__header { text-align: center; margin-bottom: 4rem; }
+    .section__badge {
+      display: inline-block;
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.25);
+      color: #a78bfa;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+    }
+    .section__title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .section__sub { color: var(--muted); font-size: 1rem; max-width: 560px; margin: 0 auto; }
+
+    /* ─── CATEGORIES ─── */
+    .categories { background: var(--bg1); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .categories__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .category-card {
+      background: var(--bg2);
+      border: 1px solid transparent;
+      border-radius: 18px;
+      padding: 2rem;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .category-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(0,229,255,0.06), transparent);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .category-card:hover { border-color: var(--border); transform: translateY(-6px); box-shadow: 0 25px 50px rgba(0,0,0,0.3), var(--glow); }
+    .category-card:hover::before { opacity: 1; }
+
+    .category-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.4rem;
+    }
+    .icon-blue   { background: rgba(0,229,255,0.12); color: var(--accent); }
+    .icon-purple { background: rgba(124,58,237,0.15); color: #a78bfa; }
+    .icon-orange { background: rgba(249,115,22,0.15); color: var(--accent3); }
+    .icon-green  { background: rgba(0,229,128,0.12); color: #00e580; }
+    .icon-pink   { background: rgba(244,114,182,0.12); color: #f472b6; }
+
+    .category-card h4 { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .category-card p { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.2rem; }
+    .category-count { color: var(--accent); font-size: 0.82rem; font-weight: 600; }
+
+    /* ─── COURSES ─── */
+    .courses__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .course-card {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+    }
+    .course-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(0,0,0,0.4), var(--glow); border-color: rgba(0,229,255,0.25); }
+
+    .course-img { width: 100%; height: 190px; object-fit: cover; transition: var(--transition); }
+    .course-card:hover .course-img { transform: scale(1.05); }
+    .course-img-wrap { overflow: hidden; position: relative; }
+    .course-tag {
+      position: absolute;
+      top: 1rem; left: 1rem;
+      background: rgba(8,12,20,0.85);
+      backdrop-filter: blur(8px);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      border: 1px solid rgba(0,229,255,0.2);
+    }
+    .course-body { padding: 1.5rem; }
+    .course-body h4 { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.3; }
+    .course-body p { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .course-footer { display: flex; justify-content: space-between; align-items: center; }
+    .course-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: var(--transition);
+    }
+    .course-link:hover { gap: 0.6rem; }
+    .course-rating { color: var(--accent3); font-size: 0.82rem; }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials { background: var(--bg1); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .testimonials__track-wrap { overflow: hidden; position: relative; }
+    .testimonials__track-wrap::before,
+    .testimonials__track-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 100px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .testimonials__track-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg1), transparent); }
+    .testimonials__track-wrap::after { right: 0; background: linear-gradient(-90deg, var(--bg1), transparent); }
+
+    .testimonials__track {
+      display: flex;
+      gap: 1.5rem;
+      animation: scroll-track 35s linear infinite;
+      width: max-content;
+    }
+    .testimonials__track:hover { animation-play-state: paused; }
+    @keyframes scroll-track {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .testi-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+      width: 340px;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .testi-card:hover { border-color: rgba(0,229,255,0.25); box-shadow: var(--glow); }
+    .testi-stars { color: var(--accent3); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testi-text { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 0.8rem; }
+    .testi-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+    .testi-name { font-weight: 600; font-size: 0.9rem; display: block; }
+    .testi-role { color: var(--muted); font-size: 0.78rem; }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(0,229,255,0.08) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      margin: 6rem auto;
+      max-width: 900px;
+      padding: 5rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(124,58,237,0.2), transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 1rem; position: relative; z-index:1;}
+    .cta-section p { color: var(--muted); margin-bottom: 2.5rem; font-size: 1rem; position: relative; z-index:1;}
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; z-index:1; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--bg1);
+      border-top: 1px solid var(--border);
+      padding: 4rem 0 2rem;
+    }
+    .footer__inner {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer__brand p { color: var(--muted); font-size: 0.88rem; margin-top: 0.7rem; max-width: 240px; line-height: 1.6; }
+    .footer__col h5 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; margin-bottom: 1.2rem; letter-spacing: 0.5px; }
+    .footer__col ul { list-style: none; }
+    .footer__col ul li { margin-bottom: 0.7rem; }
+    .footer__col ul li a { color: var(--muted); text-decoration: none; font-size: 0.88rem; transition: var(--transition); }
+    .footer__col ul li a:hover { color: var(--accent); }
+    .footer__socials { display: flex; gap: 0.8rem; margin-top: 1.2rem; }
+    .social-link {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      font-size: 1rem;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .social-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,229,255,0.05); transform: translateY(-2px); }
+    .footer__bottom { border-top: 1px solid var(--border); padding-top: 2rem; text-align: center; color: var(--muted); font-size: 0.82rem; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .hero__container { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+      .hero__text { margin: 0 auto 2rem; }
+      .hero__actions { justify-content: center; }
+      .hero__stats { justify-content: center; }
+      .categories__grid { grid-template-columns: repeat(2, 1fr); }
+      .courses__grid { grid-template-columns: 1fr 1fr; }
+      .footer__inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav__links { display: none; flex-direction: column; position: fixed; top: 0; right: 0; bottom: 0; width: 280px; background: rgba(13,20,37,0.98); backdrop-filter: blur(30px); padding: 6rem 2rem 2rem; border-left: 1px solid var(--border); }
+      .nav__links.open { display: flex; }
+      .nav__toggle { display: block; z-index: 101; }
+      .nav__links a { font-size: 1.1rem; }
+      .categories__grid { grid-template-columns: 1fr; }
+      .courses__grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 3rem 1.5rem; margin: 3rem 1rem; }
+      .footer__inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero__stats { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      .hero__stats { gap: 1.2rem; padding-top: 2rem; margin-top: 2rem; }
+      .stat__number { font-size: 1.6rem; }
+      .hero { padding: 6rem 1.2rem 3rem; }
+      .hero__float-card { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">EDU<span>.</span></a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="coaching.html">Coaching</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="navAuthArea"></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <i class="uil uil-bars" id="menuIcon"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero__container">
+      <div class="hero__left">
+        <div class="hero__badge"><span class="dot"></span> Now with AI-powered coaching</div>
+        <h1 class="hero__title">
+          <span class="line">Unlock Your</span>
+          <span class="line accent">Full Potential</span>
+          <span class="line">In <span class="accent2">Tech</span></span>
+        </h1>
+        <p class="hero__text">World-class courses taught by industry experts. Learn at your pace, build real projects, and launch your tech career with confidence.</p>
+        <div class="hero__actions">
+          <a href="courses.html" class="btn-primary">Explore Courses <i class="uil uil-arrow-right"></i></a>
+          <a href="coaching.html" class="btn-outline"><i class="uil uil-play-circle"></i> Meet Our Coaches</a>
+        </div>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <span class="stat__number" data-count="12000">0</span>
+            <span class="stat__label">Students Enrolled</span>
+          </div>
+          <div class="hero__stat">
+            <span class="stat__number" data-count="95">0</span>
+            <span class="stat__label">% Success Rate</span>
+          </div>
+          <div class="hero__stat">
+            <span class="stat__number" data-count="50">0</span>
+            <span class="stat__label">Expert Courses</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="hero__card-main">
+          <div class="hero__card-thumb">
+            <img src="./images/course1.jpg" alt="Course" />
+          </div>
+          <span class="hero__card-tag">⚡ Most Popular</span>
+          <div class="hero__card-title">HTML & CSS Mastery</div>
+          <div class="hero__card-meta">
+            <span>⭐ 4.9 (2.3k reviews)</span>
+            <span>8 weeks</span>
+          </div>
+          <div class="hero__card-progress">
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);margin-bottom:0.4rem;">
+              <span>Progress</span><span>65%</span>
+            </div>
+            <div class="hero__card-progress-bar">
+              <div class="hero__card-progress-fill"></div>
+            </div>
+          </div>
+        </div>
+        <div class="hero__float-card float-card-1">
+          <div class="float-icon green">✓</div>
+          <div>
+            <div style="font-weight:700;font-size:0.85rem;">Certificate Earned!</div>
+            <div style="color:var(--muted);font-size:0.75rem;">Web Development Path</div>
+          </div>
+        </div>
+        <div class="hero__float-card float-card-2">
+          <div class="float-icon orange">🔥</div>
+          <div>
+            <div style="font-weight:700;font-size:0.85rem;">340 students</div>
+            <div style="color:var(--muted);font-size:0.75rem;">joined this week</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CATEGORIES -->
+  <section class="categories section-pad">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__badge">Explore Topics</span>
+        <h2 class="section__title reveal">Browse <span style="color:var(--accent)">Categories</span></h2>
+        <p class="section__sub reveal reveal-delay-1">From frontend development to data science — find the path that's right for you.</p>
+      </div>
+      <div class="categories__grid">
+        <div class="category-card reveal reveal-delay-1">
+          <div class="category-icon icon-blue"><i class="uil uil-code-branch"></i></div>
+          <h4>Frontend Development</h4>
+          <p>HTML, CSS, JavaScript, React & modern frameworks</p>
+          <span class="category-count">→ 14 courses</span>
+        </div>
+        <div class="category-card reveal reveal-delay-2">
+          <div class="category-icon icon-purple"><i class="uil uil-database-alt"></i></div>
+          <h4>Database & Backend</h4>
+          <p>SQL, MongoDB, Node.js, APIs & server architecture</p>
+          <span class="category-count">→ 10 courses</span>
+        </div>
+        <div class="category-card reveal reveal-delay-3">
+          <div class="category-icon icon-pink"><i class="uil uil-pen"></i></div>
+          <h4>UI/UX Design</h4>
+          <p>Figma, prototyping, user research & design systems</p>
+          <span class="category-count">→ 8 courses</span>
+        </div>
+        <div class="category-card reveal reveal-delay-1">
+          <div class="category-icon icon-orange"><i class="uil uil-robot"></i></div>
+          <h4>AI & Machine Learning</h4>
+          <p>Python, ML fundamentals, neural networks & NLP</p>
+          <span class="category-count">→ 7 courses</span>
+        </div>
+        <div class="category-card reveal reveal-delay-2">
+          <div class="category-icon icon-green"><i class="uil uil-shield-check"></i></div>
+          <h4>Cybersecurity</h4>
+          <p>Ethical hacking, web security, encryption basics</p>
+          <span class="category-count">→ 5 courses</span>
+        </div>
+        <div class="category-card reveal reveal-delay-3">
+          <div class="category-icon icon-blue"><i class="uil uil-cloud"></i></div>
+          <h4>DevOps & Cloud</h4>
+          <p>Docker, Kubernetes, AWS, CI/CD pipelines</p>
+          <span class="category-count">→ 6 courses</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSES -->
+  <section class="section-pad">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__badge">Top Rated</span>
+        <h2 class="section__title reveal">Popular <span style="color:var(--accent)">Courses</span></h2>
+        <p class="section__sub reveal reveal-delay-1">Carefully crafted learning experiences to take you from beginner to job-ready.</p>
+      </div>
+      <div class="courses__grid">
+        <div class="course-card reveal reveal-delay-1">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course1.jpg" alt="HTML & CSS" />
+            <span class="course-tag">Bestseller</span>
+          </div>
+          <div class="course-body">
+            <h4>HTML & CSS Mastery</h4>
+            <p>Master responsive design with HTML5 and modern CSS3 techniques including Flexbox and Grid.</p>
+            <div class="course-footer">
+              <a href="courses.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.9</span>
+            </div>
+          </div>
+        </div>
+        <div class="course-card reveal reveal-delay-2">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course2.jpg" alt="JavaScript" />
+            <span class="course-tag">Most Popular</span>
+          </div>
+          <div class="course-body">
+            <h4>JavaScript Fundamentals</h4>
+            <p>From basic syntax to DOM manipulation and asynchronous programming with modern ES6+.</p>
+            <div class="course-footer">
+              <a href="courses.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.8</span>
+            </div>
+          </div>
+        </div>
+        <div class="course-card reveal reveal-delay-3">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course3.jpg" alt="UI/UX" />
+            <span class="course-tag">New</span>
+          </div>
+          <div class="course-body">
+            <h4>UI/UX Design Essentials</h4>
+            <p>Design digital experiences users love with wireframing, prototyping and design systems.</p>
+            <div class="course-footer">
+              <a href="courses.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.9</span>
+            </div>
+          </div>
+        </div>
+        <div class="course-card reveal reveal-delay-1">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course4.jpg" alt="SQL" />
+            <span class="course-tag">Essential</span>
+          </div>
+          <div class="course-body">
+            <h4>SQL & Database Design</h4>
+            <p>Write efficient queries, manage relational databases and extract meaningful insights from data.</p>
+            <div class="course-footer">
+              <a href="courses.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.7</span>
+            </div>
+          </div>
+        </div>
+        <div class="course-card reveal reveal-delay-2">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course5.jpg" alt="Database" />
+            <span class="course-tag">Trending</span>
+          </div>
+          <div class="course-body">
+            <h4>Database Fundamentals</h4>
+            <p>Build a strong data architecture foundation across SQL and NoSQL environments.</p>
+            <div class="course-footer">
+              <a href="courses.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.8</span>
+            </div>
+          </div>
+        </div>
+        <div class="course-card reveal reveal-delay-3">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course6.jpg" alt="Web Basics" />
+            <span class="course-tag">Beginner</span>
+          </div>
+          <div class="course-body">
+            <h4>Web Basics for Beginners</h4>
+            <p>Understand HTTP, browsers, hosting, and the core technologies behind every website.</p>
+            <div class="course-footer">
+              <a href="courses.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.6</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:3rem;" class="reveal">
+        <a href="courses.html" class="btn-outline">View All Courses <i class="uil uil-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials section-pad">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__badge">Student Stories</span>
+        <h2 class="section__title reveal">What Our <span style="color:var(--accent)">Students</span> Say</h2>
+      </div>
+    </div>
+    <div class="testimonials__track-wrap">
+      <div class="testimonials__track" id="testiTrack">
+        <!-- First set -->
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The HTML & CSS course was the best investment I made. Within 3 months I landed my first frontend role. The instructors are world-class."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar1.jpg" alt="" />
+            <div><span class="testi-name">Sarah K.</span><span class="testi-role">Frontend Developer</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"I went from zero coding knowledge to building full-stack apps in 6 months. The structured approach and personal coaching made all the difference."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar2.jpg" alt="" />
+            <div><span class="testi-name">Marcus T.</span><span class="testi-role">Full Stack Developer</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The UI/UX course transformed how I think about design. My portfolio went from amateur to professional-grade. Highly recommend!"</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar3.jpg" alt="" />
+            <div><span class="testi-name">Aisha M.</span><span class="testi-role">UX Designer @ Figma</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The SQL and Database courses gave me the confidence to tackle complex data challenges. My salary increased by 40% after completing the program."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar4.jpg" alt="" />
+            <div><span class="testi-name">James O.</span><span class="testi-role">Data Engineer</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Switching careers at 32 felt impossible until I found EDU. The coaching sessions kept me accountable and the content is incredibly practical."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar5.jpg" alt="" />
+            <div><span class="testi-name">Priya S.</span><span class="testi-role">Product Manager</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Live sessions with real feedback changed everything. I got hired at a startup 2 weeks after completing my final project. This platform works."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar6.jpg" alt="" />
+            <div><span class="testi-name">Kwame A.</span><span class="testi-role">JavaScript Engineer</span></div>
+          </div>
+        </div>
+        <!-- Duplicate for infinite scroll -->
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The HTML & CSS course was the best investment I made. Within 3 months I landed my first frontend role. The instructors are world-class."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar1.jpg" alt="" />
+            <div><span class="testi-name">Sarah K.</span><span class="testi-role">Frontend Developer</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"I went from zero coding knowledge to building full-stack apps in 6 months. The structured approach and personal coaching made all the difference."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar2.jpg" alt="" />
+            <div><span class="testi-name">Marcus T.</span><span class="testi-role">Full Stack Developer</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The UI/UX course transformed how I think about design. My portfolio went from amateur to professional-grade. Highly recommend!"</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar3.jpg" alt="" />
+            <div><span class="testi-name">Aisha M.</span><span class="testi-role">UX Designer @ Figma</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The SQL and Database courses gave me the confidence to tackle complex data challenges. My salary increased by 40% after completing the program."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar4.jpg" alt="" />
+            <div><span class="testi-name">James O.</span><span class="testi-role">Data Engineer</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Switching careers at 32 felt impossible until I found EDU. The coaching sessions kept me accountable and the content is incredibly practical."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar5.jpg" alt="" />
+            <div><span class="testi-name">Priya S.</span><span class="testi-role">Product Manager</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Live sessions with real feedback changed everything. I got hired at a startup 2 weeks after completing my final project. This platform works."</p>
+          <div class="testi-author">
+            <img class="testi-avatar" src="./images/avatar6.jpg" alt="" />
+            <div><span class="testi-name">Kwame A.</span><span class="testi-role">JavaScript Engineer</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="container">
+    <div class="cta-section reveal">
+      <h2>Ready to <span style="color:var(--accent)">Start Learning?</span></h2>
+      <p>Join over 12,000 students who've transformed their careers with EDU. Your future self will thank you.</p>
+      <div class="cta-actions">
+        <a href="courses.html" class="btn-primary">Browse All Courses <i class="uil uil-arrow-right"></i></a>
+        <a href="contact.html" class="btn-outline">Talk to an Advisor</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo">EDU<span style="color:var(--accent)">.</span></a>
+          <p>The premier platform for tech education. Learn, build, and grow your career with world-class instructors.</p>
+          <div class="footer__socials">
+            <a href="https://instagram.com" class="social-link" target="_blank"><i class="uil uil-instagram"></i></a>
+            <a href="https://linkedin.com" class="social-link" target="_blank"><i class="uil uil-linkedin-alt"></i></a>
+            <a href="https://facebook.com" class="social-link" target="_blank"><i class="uil uil-facebook-f"></i></a>
+            <a href="https://twitter.com" class="social-link" target="_blank"><i class="uil uil-twitter-alt"></i></a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="coaching.html">Coaching</a></li>
+            <li><a href="#">Certificates</a></li>
+            <li><a href="#">Learning Paths</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Support</h5>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Community</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 EDU Platform. All rights reserved. Built with passion for learners everywhere.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Particles
+    const particlesEl = document.getElementById('particles');
+    const colors = ['#00e5ff','#7c3aed','#f97316','#00e580','#f472b6'];
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 2;
+      p.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        animation-duration:${Math.random()*20+15}s;
+        animation-delay:${Math.random()*15}s;
+        opacity:${Math.random()*0.4+0.1};
+      `;
+      particlesEl.appendChild(p);
+    }
+
+    // ── Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ── Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+    const menuIcon  = document.getElementById('menuIcon');
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuIcon.className = open ? 'uil uil-multiply' : 'uil uil-bars';
+    });
+
+    // ── Auth nav ──
+    function renderNavAuth() {
+      const area = document.getElementById('navAuthArea');
+      const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (user) {
+        const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+        area.innerHTML = `<div class="nav__user" id="navUser"><div class="nav__user-avatar" id="userAvatarBtn">${initials}</div><span class="nav__user-name">Hi, ${user.name.split(' ')[0]}</span><div class="nav__dropdown" id="navDropdown"><a href="profile.html"><i class="uil uil-user-circle"></i> My Profile</a><button class="logout-btn" onclick="logout()"><i class="uil uil-sign-out-alt"></i> Logout</button></div></div>`;
+        document.getElementById('userAvatarBtn').addEventListener('click', e => { e.stopPropagation(); document.getElementById('navDropdown').classList.toggle('open'); });
+        document.addEventListener('click', () => document.getElementById('navDropdown')?.classList.remove('open'));
+      } else {
+        area.innerHTML = `<a href="login.html" class="nav__cta">Login</a>`;
+      }
+    }
+    function logout() { localStorage.removeItem('currentUser'); window.location.reload(); }
+    renderNavAuth();
+
+    // ── Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => obs.observe(r));
+
+    // ── Animated counters
+    function animateCount(el) {
+      const target = +el.dataset.count;
+      const isLarge = target > 1000;
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) { current = target; clearInterval(timer); }
+        el.textContent = isLarge ? Math.floor(current).toLocaleString() + '+' : Math.floor(current) + (el.dataset.count == '95' ? '%' : '+');
+      }, 16);
+    }
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCount(e.target);
+          counterObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+  </script>
+</body>
+</html>

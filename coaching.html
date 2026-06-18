@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coaching — EDU Platform</title>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.2.0/css/line.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c14;
+      --bg1: #0d1425;
+      --bg2: #111b30;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f97316;
+      --white: #f0f4ff;
+      --muted: rgba(240, 244, 255, .55);
+      --border: rgba(0, 229, 255, .12);
+      --glow: 0 0 40px rgba(0, 229, 255, .15);
+      --transition: all .4s cubic-bezier(.23, 1, .32, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124, 58, 237, .18) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0, 229, 255, .12) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.2rem 0;
+      transition: var(--transition);
+    }
+
+    nav.scrolled {
+      background: rgba(8, 12, 20, .85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: .8rem 0;
+    }
+
+    .nav__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav__logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -1px;
+    }
+
+    .nav__logo span {
+      color: var(--accent);
+    }
+
+    .nav__links {
+      display: flex;
+      list-style: none;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav__links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    .nav__links a:hover {
+      color: var(--white);
+    }
+
+    .nav__links a:hover::after,
+    .nav__links a.active::after {
+      width: 100%;
+    }
+
+    .nav__links a.active {
+      color: var(--accent);
+    }
+
+    .nav__cta {
+      background: var(--accent);
+      color: var(--bg) !important;
+      padding: .6rem 1.4rem !important;
+      border-radius: 50px;
+      font-weight: 700 !important;
+    }
+
+    .nav__cta::after {
+      display: none !important;
+    }
+
+    .nav__user {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      position: relative;
+    }
+
+    .nav__user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      color: var(--white);
+      cursor: pointer;
+      border: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .nav__user-avatar:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(0, 229, 255, .3);
+    }
+
+    .nav__user-name {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .nav__dropdown {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      min-width: 160px;
+      padding: .5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .5);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: var(--transition);
+    }
+
+    .nav__dropdown.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    .nav__dropdown a,
+    .nav__dropdown button {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      width: 100%;
+      padding: .55rem .9rem;
+      border-radius: 8px;
+      font-size: .88rem;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .nav__dropdown a:hover,
+    .nav__dropdown button:hover {
+      background: rgba(0, 229, 255, .07);
+      color: var(--white);
+    }
+
+    .nav__dropdown .logout-btn {
+      color: rgba(249, 115, 22, .75);
+    }
+
+    .nav__dropdown .logout-btn:hover {
+      background: rgba(249, 115, 22, .1);
+      color: var(--accent3);
+    }
+
+    .nav__toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Page Hero */
+    .page-hero {
+      padding: 10rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-hero .badge {
+      display: inline-block;
+      background: rgba(124, 58, 237, .1);
+      border: 1px solid rgba(124, 58, 237, .25);
+      color: #a78bfa;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: .35rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+    }
+
+    .page-hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 1rem;
+    }
+
+    .page-hero h1 span {
+      color: var(--accent);
+    }
+
+    .page-hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Team Grid */
+    .team-section {
+      padding: 4rem 0 6rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .team__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .coach-card {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: var(--transition);
+      opacity: 0;
+      animation: fadeUp .6s ease forwards;
+      position: relative;
+    }
+
+    .coach-card:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .coach-card:nth-child(2) {
+      animation-delay: .1s;
+    }
+
+    .coach-card:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .coach-card:nth-child(4) {
+      animation-delay: .2s;
+    }
+
+    .coach-card:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .coach-card:nth-child(6) {
+      animation-delay: .3s;
+    }
+
+    .coach-card:nth-child(7) {
+      animation-delay: .35s;
+    }
+
+    .coach-card:nth-child(8) {
+      animation-delay: .4s;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .coach-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0, 229, 255, .3);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, .4), var(--glow);
+    }
+
+    .coach-img-wrap {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .coach-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .coach-card:hover .coach-img-wrap img {
+      transform: scale(1.07);
+    }
+
+    .coach-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--bg1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .coach-body {
+      padding: 1.3rem;
+    }
+
+    .coach-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .25rem;
+    }
+
+    .coach-role {
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .coach-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-bottom: 1rem;
+    }
+
+    .coach-tag {
+      background: rgba(0, 229, 255, .07);
+      border: 1px solid rgba(0, 229, 255, .15);
+      color: var(--muted);
+      font-size: .68rem;
+      font-weight: 600;
+      padding: .2rem .6rem;
+      border-radius: 50px;
+      letter-spacing: .3px;
+    }
+
+    .coach-socials {
+      display: flex;
+      gap: .5rem;
+    }
+
+    .coach-social {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: .9rem;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .coach-social:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* FAQ */
+    .faq-section {
+      background: var(--bg1);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 6rem 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-badge {
+      display: inline-block;
+      background: rgba(124, 58, 237, .1);
+      border: 1px solid rgba(124, 58, 237, .25);
+      color: #a78bfa;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: .35rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 1rem;
+    }
+
+    .section-title span {
+      color: var(--accent);
+    }
+
+    .faq__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-item:hover {
+      border-color: rgba(0, 229, 255, .25);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1.4rem 1.5rem;
+      cursor: pointer;
+      gap: 1rem;
+    }
+
+    .faq-question h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: .95rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(0, 229, 255, .08);
+      border: 1px solid rgba(0, 229, 255, .15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: .85rem;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .faq-item.open .faq-icon {
+      background: var(--accent);
+      color: var(--bg);
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .45s ease, padding .3s ease;
+    }
+
+    .faq-answer p {
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.7;
+      padding: 0 1.5rem 1.4rem;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+    }
+
+    footer {
+      background: var(--bg1);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer__bottom {
+      text-align: center;
+      color: var(--muted);
+      font-size: .82rem;
+      padding-top: 2rem;
+    }
+
+    @media(max-width:1100px) {
+      .team__grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media(max-width:768px) {
+      .nav__links {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 280px;
+        background: rgba(13, 20, 37, .98);
+        backdrop-filter: blur(30px);
+        padding: 6rem 2rem 2rem;
+        border-left: 1px solid var(--border);
+      }
+
+      .nav__links.open {
+        display: flex;
+      }
+
+      .nav__toggle {
+        display: block;
+      }
+
+      .team__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .faq__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width:480px) {
+      .team__grid {
+        grid-template-columns: 1fr;
+      }
+      .page-hero {
+        padding: 7rem 1.2rem 3rem;
+      }
+      .coach-body {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav id="navbar">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">EDU<span>.</span></a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="coaching.html" class="active">Coaching</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="navAuthArea"></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle"><i class="uil uil-bars" id="menuIcon"></i></button>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <span class="badge">Expert Coaches</span>
+    <h1>Meet Your <span>Coaches</span></h1>
+    <p>Our expert coaches will guide you through your goals, help you create an actionable plan, build your confidence,
+      and keep you accountable along the way.</p>
+  </div>
+
+  <section class="team-section">
+    <div class="container">
+      <div class="team__grid">
+
+        <div class="coach-card">
+          <div class="coach-img-wrap">
+            <img src="./images/tm1.jpg" alt="Shatta Wale" />
+            <div class="coach-overlay"></div>
+          </div>
+          <div class="coach-body">
+            <div class="coach-name">Shatta Wale</div>
+            <div class="coach-role">Frontend & AI Coach</div>
+            <div class="coach-tags">
+              <span class="coach-tag">Frontend</span>
+              <span class="coach-tag">AI</span>
+              <span class="coach-tag">Early Career</span>
+              <span class="coach-tag">Job Hunting</span>
+            </div>
+            <div class="coach-socials">
+              <a href="#" class="coach-social"><i class="uil uil-instagram"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-twitter-alt"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-linkedin-alt"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="coach-card">
+          <div class="coach-img-wrap">
+            <img src="./images/tm2.jpg" alt="Mia Jones" />
+            <div class="coach-overlay"></div>
+          </div>
+          <div class="coach-body">
+            <div class="coach-name">Mia Jones</div>
+            <div class="coach-role">Full-Stack Coach</div>
+            <div class="coach-tags">
+              <span class="coach-tag">React.js</span>
+              <span class="coach-tag">Node.js</span>
+              <span class="coach-tag">TypeScript</span>
+              <span class="coach-tag">Next.js</span>
+            </div>
+            <div class="coach-socials">
+              <a href="#" class="coach-social"><i class="uil uil-instagram"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-twitter-alt"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-linkedin-alt"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="coach-card">
+          <div class="coach-img-wrap">
+            <img src="./images/tm3.jpg" alt="Diana Ayi" />
+            <div class="coach-overlay"></div>
+          </div>
+          <div class="coach-body">
+            <div class="coach-name">Diana Ayi</div>
+            <div class="coach-role">UI/UX Product Designer</div>
+            <div class="coach-tags">
+              <span class="coach-tag">Figma</span>
+              <span class="coach-tag">User Research</span>
+              <span class="coach-tag">Prototyping</span>
+              <span class="coach-tag">Branding</span>
+            </div>
+            <div class="coach-socials">
+              <a href="#" class="coach-social"><i class="uil uil-instagram"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-twitter-alt"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-linkedin-alt"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="coach-card">
+          <div class="coach-img-wrap">
+            <img src="./images/tm4.jpg" alt="John Dumelo" />
+            <div class="coach-overlay"></div>
+          </div>
+          <div class="coach-body">
+            <div class="coach-name">John Dumelo</div>
+            <div class="coach-role">Database Architect</div>
+            <div class="coach-tags">
+              <span class="coach-tag">PostgreSQL</span>
+              <span class="coach-tag">MongoDB</span>
+              <span class="coach-tag">DB Design</span>
+              <span class="coach-tag">Cloud</span>
+            </div>
+            <div class="coach-socials">
+              <a href="#" class="coach-social"><i class="uil uil-instagram"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-twitter-alt"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-linkedin-alt"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="coach-card">
+          <div class="coach-img-wrap">
+            <img src="./images/tm5.jpg" alt="Ruth Shockings" />
+            <div class="coach-overlay"></div>
+          </div>
+          <div class="coach-body">
+            <div class="coach-name">Ruth Shockings</div>
+            <div class="coach-role">CSS & Styling Lead</div>
+            <div class="coach-tags">
+              <span class="coach-tag">Tailwind</span>
+              <span class="coach-tag">SASS/SCSS</span>
+              <span class="coach-tag">Animation</span>
+              <span class="coach-tag">Bootstrap</span>
+            </div>
+            <div class="coach-socials">
+              <a href="#" class="coach-social"><i class="uil uil-instagram"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-twitter-alt"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-linkedin-alt"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="coach-card">
+          <div class="coach-img-wrap">
+            <img src="./images/tm6.jpg" alt="Edem Quist" />
+            <div class="coach-overlay"></div>
+          </div>
+          <div class="coach-body">
+            <div class="coach-name">Edem Quist</div>
+            <div class="coach-role">Logic & Security Specialist</div>
+            <div class="coach-tags">
+              <span class="coach-tag">JS ES6+</span>
+              <span class="coach-tag">Security</span>
+              <span class="coach-tag">Testing</span>
+              <span class="coach-tag">APIs</span>
+            </div>
+            <div class="coach-socials">
+              <a href="#" class="coach-social"><i class="uil uil-instagram"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-twitter-alt"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-linkedin-alt"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="coach-card">
+          <div class="coach-img-wrap">
+            <img src="./images/tm7.jpg" alt="Lila James" />
+            <div class="coach-overlay"></div>
+          </div>
+          <div class="coach-body">
+            <div class="coach-name">Lila James</div>
+            <div class="coach-role">UX Researcher</div>
+            <div class="coach-tags">
+              <span class="coach-tag">User Journeys</span>
+              <span class="coach-tag">A11y</span>
+              <span class="coach-tag">Wireframing</span>
+              <span class="coach-tag">IA</span>
+            </div>
+            <div class="coach-socials">
+              <a href="#" class="coach-social"><i class="uil uil-instagram"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-twitter-alt"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-linkedin-alt"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="coach-card">
+          <div class="coach-img-wrap">
+            <img src="./images/avatar1.jpg" alt="Menz Gold" />
+            <div class="coach-overlay"></div>
+          </div>
+          <div class="coach-body">
+            <div class="coach-name">Menz Gold</div>
+            <div class="coach-role">DevOps Engineer</div>
+            <div class="coach-tags">
+              <span class="coach-tag">Docker</span>
+              <span class="coach-tag">Firebase</span>
+              <span class="coach-tag">Redux</span>
+              <span class="coach-tag">REST APIs</span>
+            </div>
+            <div class="coach-socials">
+              <a href="#" class="coach-social"><i class="uil uil-instagram"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-twitter-alt"></i></a>
+              <a href="#" class="coach-social"><i class="uil uil-linkedin-alt"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Got Questions?</span>
+        <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+      </div>
+      <div class="faq__grid">
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>How do I choose the right coach for me?</h4>
+            <span class="faq-icon"><i class="uil uil-plus"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>Browse our coaches' expertise tags. Whether you're focused on UI/UX, Frontend, or Databases, each coach
+              has a specific area of mastery to guide you effectively.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>Are sessions live or recorded?</h4>
+            <span class="faq-icon"><i class="uil uil-plus"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>Most sessions are live to ensure real-time feedback, but they are also recorded for your future reference
+              and review.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>Do I get a certificate after completion?</h4>
+            <span class="faq-icon"><i class="uil uil-plus"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes! Upon successful completion of your learning journey and projects, you'll receive a verified
+              certificate to showcase on LinkedIn.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>Do I need prior design experience?</h4>
+            <span class="faq-icon"><i class="uil uil-plus"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>Not at all. Our coaches start from the basics of Figma and design thinking, helping you build your
+              portfolio from scratch even without any art background.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>What Frontend frameworks are covered?</h4>
+            <span class="faq-icon"><i class="uil uil-plus"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>We focus on the most in-demand technologies including React.js, Next.js, and Tailwind CSS, ensuring
+              you're ready for the modern job market.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>Will I learn both SQL and NoSQL?</h4>
+            <span class="faq-icon"><i class="uil uil-plus"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes, our database track covers relational databases like PostgreSQL and NoSQL options like MongoDB for a
+              full-stack understanding of data.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>Do you provide job placement assistance?</h4>
+            <span class="faq-icon"><i class="uil uil-plus"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>We offer intensive "Finding a job" workshops, portfolio reviews, and technical mock interviews to
+              maximize your chances of landing a role.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>Can I switch between learning paths?</h4>
+            <span class="faq-icon"><i class="uil uil-plus"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>Absolutely! We encourage flexibility. You can discuss your goals with your coach and adjust your
+              curriculum to include more design or more backend as you grow.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">© 2026 EDU Platform. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const menuIcon = document.getElementById('menuIcon');
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuIcon.className = open ? 'uil uil-multiply' : 'uil uil-bars';
+    });
+
+    (function renderNavAuth() {
+      const area = document.getElementById('navAuthArea');
+      const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (user) {
+        const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        area.innerHTML = `<div class="nav__user"><div class="nav__user-avatar" id="userAvatarBtn">${initials}</div><span class="nav__user-name">Hi, ${user.name.split(' ')[0]}</span><div class="nav__dropdown" id="navDropdown"><a href="profile.html"><i class="uil uil-user-circle"></i> My Profile</a><button class="logout-btn" onclick="logout()"><i class="uil uil-sign-out-alt"></i> Logout</button></div></div>`;
+        document.getElementById('userAvatarBtn').addEventListener('click', e => { e.stopPropagation(); document.getElementById('navDropdown').classList.toggle('open'); });
+        document.addEventListener('click', () => document.getElementById('navDropdown')?.classList.remove('open'));
+      } else { area.innerHTML = `<a href="login.html" class="nav__cta">Login</a>`; }
+    })();
+    function logout() { localStorage.removeItem('currentUser'); window.location.reload(); }
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
+
+</html>

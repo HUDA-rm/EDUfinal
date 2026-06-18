@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses — EDU Platform</title>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.2.0/css/line.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c14;
+      --bg1: #0d1425;
+      --bg2: #111b30;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f97316;
+      --white: #f0f4ff;
+      --muted: rgba(240,244,255,0.55);
+      --border: rgba(0,229,255,0.12);
+      --glow: 0 0 40px rgba(0,229,255,0.15);
+      --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% -10%,rgba(124,58,237,0.18) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 110%,rgba(0,229,255,0.12) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 0;transition:var(--transition);}
+    nav.scrolled{background:rgba(8,12,20,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:.8rem 0;}
+    .nav__container{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;}
+    .nav__logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;color:var(--white);text-decoration:none;letter-spacing:-1px;}
+    .nav__logo span{color:var(--accent);}
+    .nav__links{display:flex;list-style:none;gap:2.5rem;align-items:center;}
+    .nav__links a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;transition:var(--transition);position:relative;}
+    .nav__links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);border-radius:2px;transition:var(--transition);}
+    .nav__links a:hover{color:var(--white);}
+    .nav__links a:hover::after{width:100%;}
+    .nav__links a.active{color:var(--accent);}
+    .nav__links a.active::after{width:100%;}
+    .nav__cta{background:var(--accent);color:var(--bg) !important;padding:.6rem 1.4rem !important;border-radius:50px;font-weight:700 !important;}
+    .nav__cta::after{display:none !important;}
+    .nav__cta:hover{background:#33eaff !important;transform:translateY(-1px);box-shadow:0 8px 25px rgba(0,229,255,.4);}
+    .nav__user{display:flex;align-items:center;gap:.75rem;position:relative;}
+    .nav__user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;color:var(--white);cursor:pointer;border:2px solid var(--border);transition:var(--transition);}
+    .nav__user-avatar:hover{border-color:var(--accent);box-shadow:0 0 15px rgba(0,229,255,.3);}
+    .nav__user-name{font-size:.9rem;font-weight:500;color:var(--white);}
+    .nav__dropdown{position:absolute;top:calc(100% + 12px);right:0;background:var(--bg1);border:1px solid var(--border);border-radius:12px;min-width:160px;padding:.5rem;box-shadow:0 20px 50px rgba(0,0,0,.5);opacity:0;pointer-events:none;transform:translateY(-8px);transition:var(--transition);}
+    .nav__dropdown.open{opacity:1;pointer-events:all;transform:translateY(0);}
+    .nav__dropdown a,.nav__dropdown button{display:flex;align-items:center;gap:.6rem;width:100%;padding:.55rem .9rem;border-radius:8px;font-size:.88rem;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:none;transition:var(--transition);font-family:'DM Sans',sans-serif;}
+    .nav__dropdown a:hover,.nav__dropdown button:hover{background:rgba(0,229,255,.07);color:var(--white);}
+    .nav__dropdown .logout-btn{color:rgba(249,115,22,.75);}
+    .nav__dropdown .logout-btn:hover{background:rgba(249,115,22,.1);color:var(--accent3);}
+    .nav__toggle{display:none;background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer;}
+
+    /* Page Header */
+    .page-hero{padding:10rem 2rem 5rem;text-align:center;position:relative;z-index:1;}
+    .page-hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:800;letter-spacing:-2px;margin-bottom:1rem;}
+    .page-hero h1 span{color:var(--accent);}
+    .page-hero p{color:var(--muted);font-size:1.05rem;max-width:550px;margin:0 auto 2.5rem;}
+
+    /* Filter tabs */
+    .filter-tabs{display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:3.5rem;position:relative;z-index:1;}
+    .filter-tab{background:var(--bg1);border:1px solid var(--border);color:var(--muted);padding:.5rem 1.3rem;border-radius:50px;font-size:.85rem;font-weight:500;cursor:pointer;transition:var(--transition);}
+    .filter-tab:hover,.filter-tab.active{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:700;}
+
+    /* Search bar */
+    .search-bar{position:relative;max-width:480px;margin:0 auto 3rem;}
+    .search-bar input{width:100%;background:var(--bg1);border:1px solid var(--border);color:var(--white);padding:.9rem 1.2rem .9rem 3rem;border-radius:50px;font-size:.92rem;outline:none;transition:var(--transition);font-family:'DM Sans',sans-serif;}
+    .search-bar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,229,255,.1);}
+    .search-bar input::placeholder{color:var(--muted);}
+    .search-bar i{position:absolute;left:1.1rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.1rem;}
+
+    /* Grid */
+    .container{max-width:1200px;margin:0 auto;padding:0 2rem;}
+    .courses-page{padding:0 0 6rem;position:relative;z-index:1;}
+    .courses__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+
+    .course-card{background:var(--bg1);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:var(--transition);position:relative;opacity:0;animation:fadeUp .6s ease forwards;}
+    .course-card:nth-child(1){animation-delay:.05s;}
+    .course-card:nth-child(2){animation-delay:.1s;}
+    .course-card:nth-child(3){animation-delay:.15s;}
+    .course-card:nth-child(4){animation-delay:.2s;}
+    .course-card:nth-child(5){animation-delay:.25s;}
+    .course-card:nth-child(6){animation-delay:.3s;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+
+    .course-card:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(0,0,0,.4),var(--glow);border-color:rgba(0,229,255,.25);}
+    .course-img-wrap{overflow:hidden;position:relative;}
+    .course-img{width:100%;height:195px;object-fit:cover;transition:var(--transition);}
+    .course-card:hover .course-img{transform:scale(1.06);}
+    .course-tag{position:absolute;top:1rem;left:1rem;background:rgba(8,12,20,.85);backdrop-filter:blur(8px);color:var(--accent);font-size:.72rem;font-weight:700;letter-spacing:.5px;padding:.3rem .8rem;border-radius:50px;border:1px solid rgba(0,229,255,.2);}
+    .course-level{position:absolute;top:1rem;right:1rem;background:rgba(8,12,20,.85);backdrop-filter:blur(8px);color:var(--muted);font-size:.7rem;font-weight:600;padding:.25rem .7rem;border-radius:50px;}
+
+    .course-body{padding:1.5rem;}
+    .course-body h4{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;line-height:1.3;}
+    .course-body p{color:var(--muted);font-size:.85rem;margin-bottom:1.3rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .course-meta{display:flex;gap:1rem;align-items:center;margin-bottom:1.2rem;font-size:.78rem;color:var(--muted);}
+    .course-meta span{display:flex;align-items:center;gap:.3rem;}
+    .course-footer{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid rgba(255,255,255,.06);}
+    .course-link{color:var(--accent);text-decoration:none;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:.3rem;transition:var(--transition);}
+    .course-link:hover{gap:.6rem;}
+    .course-rating{color:var(--accent3);font-size:.82rem;font-weight:600;}
+
+    footer{background:var(--bg1);border-top:1px solid var(--border);padding:3rem 0 2rem;position:relative;z-index:1;}
+    .footer__bottom{text-align:center;color:var(--muted);font-size:.82rem;padding:2rem 0 0;border-top:1px solid var(--border);margin-top:1rem;}
+
+    @media(max-width:1024px){.courses__grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:768px){
+      .nav__links{display:none;flex-direction:column;position:fixed;top:0;right:0;bottom:0;width:280px;background:rgba(13,20,37,.98);backdrop-filter:blur(30px);padding:6rem 2rem 2rem;border-left:1px solid var(--border);}
+      .nav__links.open{display:flex;}
+      .nav__toggle{display:block;}
+      .courses__grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">EDU<span>.</span></a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="coaching.html">Coaching</a></li>
+        <li><a href="courses.html" class="active">Courses</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="navAuthArea"></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle"><i class="uil uil-bars" id="menuIcon"></i></button>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <h1>All <span>Courses</span></h1>
+    <p>Explore our full library of expert-crafted courses designed to get you hired and keep you growing.</p>
+    <div class="search-bar">
+      <i class="uil uil-search"></i>
+      <input type="text" placeholder="Search courses..." id="searchInput" />
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All Courses</button>
+      <button class="filter-tab" data-filter="frontend">Frontend</button>
+      <button class="filter-tab" data-filter="backend">Backend</button>
+      <button class="filter-tab" data-filter="design">Design</button>
+      <button class="filter-tab" data-filter="beginner">Beginner</button>
+    </div>
+  </div>
+
+  <section class="courses-page">
+    <div class="container">
+      <div class="courses__grid" id="coursesGrid">
+        <div class="course-card" data-category="frontend">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course1.jpg" alt="HTML & CSS" />
+            <span class="course-tag">Bestseller</span>
+            <span class="course-level">Beginner</span>
+          </div>
+          <div class="course-body">
+            <h4>HTML & CSS Mastery</h4>
+            <p>Master responsive design with HTML5 and modern CSS3 including Flexbox and Grid.</p>
+            <div class="course-meta">
+              <span><i class="uil uil-clock"></i> 8 weeks</span>
+              <span><i class="uil uil-users-alt"></i> 2.3k enrolled</span>
+              <span><i class="uil uil-layers"></i> 42 lessons</span>
+            </div>
+            <div class="course-footer">
+              <a href="course1.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.9</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card" data-category="frontend">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course2.jpg" alt="JavaScript" />
+            <span class="course-tag">Most Popular</span>
+            <span class="course-level">Intermediate</span>
+          </div>
+          <div class="course-body">
+            <h4>JavaScript Fundamentals</h4>
+            <p>From syntax basics to DOM manipulation and asynchronous programming with ES6+.</p>
+            <div class="course-meta">
+              <span><i class="uil uil-clock"></i> 10 weeks</span>
+              <span><i class="uil uil-users-alt"></i> 3.1k enrolled</span>
+              <span><i class="uil uil-layers"></i> 58 lessons</span>
+            </div>
+            <div class="course-footer">
+              <a href="course2.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.8</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card" data-category="design">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course3.jpg" alt="UI/UX" />
+            <span class="course-tag">New</span>
+            <span class="course-level">Beginner</span>
+          </div>
+          <div class="course-body">
+            <h4>UI/UX Design Essentials</h4>
+            <p>User research, wireframing, and high-fidelity prototyping for beautiful interfaces.</p>
+            <div class="course-meta">
+              <span><i class="uil uil-clock"></i> 6 weeks</span>
+              <span><i class="uil uil-users-alt"></i> 1.8k enrolled</span>
+              <span><i class="uil uil-layers"></i> 35 lessons</span>
+            </div>
+            <div class="course-footer">
+              <a href="course3.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.9</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card" data-category="backend">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course4.jpg" alt="SQL" />
+            <span class="course-tag">Essential</span>
+            <span class="course-level">Intermediate</span>
+          </div>
+          <div class="course-body">
+            <h4>SQL & Database Design</h4>
+            <p>Write efficient queries and manage relational databases to extract meaningful insights.</p>
+            <div class="course-meta">
+              <span><i class="uil uil-clock"></i> 7 weeks</span>
+              <span><i class="uil uil-users-alt"></i> 1.5k enrolled</span>
+              <span><i class="uil uil-layers"></i> 40 lessons</span>
+            </div>
+            <div class="course-footer">
+              <a href="course4.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.7</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card" data-category="backend">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course5.jpg" alt="Database" />
+            <span class="course-tag">Trending</span>
+            <span class="course-level">Advanced</span>
+          </div>
+          <div class="course-body">
+            <h4>Database Fundamentals</h4>
+            <p>Build a strong data architecture foundation across SQL and NoSQL environments.</p>
+            <div class="course-meta">
+              <span><i class="uil uil-clock"></i> 9 weeks</span>
+              <span><i class="uil uil-users-alt"></i> 980 enrolled</span>
+              <span><i class="uil uil-layers"></i> 52 lessons</span>
+            </div>
+            <div class="course-footer">
+              <a href="course5.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.8</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card" data-category="beginner frontend">
+          <div class="course-img-wrap">
+            <img class="course-img" src="./images/course6.jpg" alt="Web Basics" />
+            <span class="course-tag">Start Here</span>
+            <span class="course-level">Beginner</span>
+          </div>
+          <div class="course-body">
+            <h4>Web Basics for Beginners</h4>
+            <p>Understand HTTP, browsers, hosting, and the core technologies behind every website.</p>
+            <div class="course-meta">
+              <span><i class="uil uil-clock"></i> 4 weeks</span>
+              <span><i class="uil uil-users-alt"></i> 4.2k enrolled</span>
+              <span><i class="uil uil-layers"></i> 28 lessons</span>
+            </div>
+            <div class="course-footer">
+              <a href="course6.html" class="course-link">Learn More <i class="uil uil-arrow-right"></i></a>
+              <span class="course-rating">★ 4.6</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">© 2026 EDU Platform. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+    const menuIcon  = document.getElementById('menuIcon');
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuIcon.className = open ? 'uil uil-multiply' : 'uil uil-bars';
+    });
+
+    // ── Auth nav ──
+    (function renderNavAuth() {
+      const area = document.getElementById('navAuthArea');
+      const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (user) {
+        const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+        area.innerHTML = `<div class="nav__user"><div class="nav__user-avatar" id="userAvatarBtn">${initials}</div><span class="nav__user-name">Hi, ${user.name.split(' ')[0]}</span><div class="nav__dropdown" id="navDropdown"><a href="profile.html"><i class="uil uil-user-circle"></i> My Profile</a><button class="logout-btn" onclick="logout()"><i class="uil uil-sign-out-alt"></i> Logout</button></div></div>`;
+        document.getElementById('userAvatarBtn').addEventListener('click', e => { e.stopPropagation(); document.getElementById('navDropdown').classList.toggle('open'); });
+        document.addEventListener('click', () => document.getElementById('navDropdown')?.classList.remove('open'));
+      } else { area.innerHTML = `<a href="login.html" class="nav__cta">Login</a>`; }
+    })();
+    function logout() { localStorage.removeItem('currentUser'); window.location.reload(); }
+
+    // Filter tabs + Search (combined so they work together)
+    const tabs  = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('.course-card');
+
+    function applyFilters() {
+      const activeFilter = document.querySelector('.filter-tab.active').dataset.filter;
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      cards.forEach(c => {
+        const matchFilter = activeFilter === 'all' || c.dataset.category.includes(activeFilter);
+        const text = c.querySelector('h4').textContent.toLowerCase() + ' ' + c.querySelector('p').textContent.toLowerCase();
+        const matchSearch = q === '' || text.includes(q);
+        c.style.display = (matchFilter && matchSearch) ? '' : 'none';
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        applyFilters();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+  </script>
+</body>
+</html>

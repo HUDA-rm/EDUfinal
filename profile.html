@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — EDU Platform</title>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.2.0/css/line.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c14;
+      --bg1: #0d1425;
+      --bg2: #111b30;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f97316;
+      --white: #f0f4ff;
+      --muted: rgba(240, 244, 255, 0.55);
+      --border: rgba(0, 229, 255, 0.12);
+      --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124, 58, 237, 0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0, 229, 255, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.2rem 0;
+      transition: var(--transition);
+    }
+
+    nav.scrolled {
+      background: rgba(8, 12, 20, 0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: .8rem 0;
+    }
+
+    .nav__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav__logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -1px;
+    }
+
+    .nav__logo span {
+      color: var(--accent);
+    }
+
+    .nav__links {
+      display: flex;
+      list-style: none;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav__links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    .nav__links a:hover {
+      color: var(--white);
+    }
+
+    .nav__links a:hover::after,
+    .nav__links a.active::after {
+      width: 100%;
+    }
+
+    .nav__links a.active {
+      color: var(--accent);
+    }
+
+    .nav__cta {
+      background: var(--accent);
+      color: var(--bg) !important;
+      padding: .6rem 1.4rem !important;
+      border-radius: 50px;
+      font-weight: 700 !important;
+    }
+
+    .nav__cta::after {
+      display: none !important;
+    }
+
+    .nav__cta:hover {
+      background: #33eaff !important;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(0, 229, 255, .4);
+    }
+
+    .nav__toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .nav__user {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      position: relative;
+    }
+
+    .nav__user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      color: var(--white);
+      cursor: pointer;
+      border: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .nav__user-avatar:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(0, 229, 255, .3);
+    }
+
+    .nav__user-name {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .nav__dropdown {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      min-width: 160px;
+      padding: .5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .5);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: var(--transition);
+    }
+
+    .nav__dropdown.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    .nav__dropdown a,
+    .nav__dropdown button {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      width: 100%;
+      padding: .55rem .9rem;
+      border-radius: 8px;
+      font-size: .88rem;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .nav__dropdown a:hover,
+    .nav__dropdown button:hover {
+      background: rgba(0, 229, 255, .07);
+      color: var(--white);
+    }
+
+    .nav__dropdown .logout-btn {
+      color: rgba(249, 115, 22, .75);
+    }
+
+    .nav__dropdown .logout-btn:hover {
+      background: rgba(249, 115, 22, .1);
+      color: var(--accent3);
+    }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── PROFILE HEADER ── */
+    .profile-header {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp .5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-header::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .profile-header-inner {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .profile-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.2rem;
+      color: var(--white);
+      border: 3px solid rgba(0, 229, 255, .25);
+      box-shadow: 0 0 40px rgba(0, 229, 255, .2);
+      transition: var(--transition);
+    }
+
+    .profile-avatar:hover {
+      box-shadow: 0 0 60px rgba(0, 229, 255, .35);
+    }
+
+    .profile-status-dot {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00bf8f;
+      border: 3px solid var(--bg1);
+      box-shadow: 0 0 8px rgba(0, 191, 143, .5);
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: .2rem;
+    }
+
+    .profile-email {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    .profile-badges {
+      display: flex;
+      gap: .6rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .3rem .8rem;
+      border-radius: 50px;
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+
+    .badge-member {
+      background: rgba(0, 229, 255, .1);
+      border: 1px solid rgba(0, 229, 255, .2);
+      color: var(--accent);
+    }
+
+    .badge-active {
+      background: rgba(0, 191, 143, .1);
+      border: 1px solid rgba(0, 191, 143, .2);
+      color: #00bf8f;
+    }
+
+    .profile-header-actions {
+      display: flex;
+      gap: .8rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .btn-edit {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .65rem 1.4rem;
+      border-radius: 50px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-primary-sm {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .btn-primary-sm:hover {
+      background: #33eaff;
+      box-shadow: 0 8px 24px rgba(0, 229, 255, .35);
+      transform: translateY(-1px);
+    }
+
+    .btn-danger-sm {
+      background: transparent;
+      color: rgba(249, 115, 22, .8);
+      border: 1px solid rgba(249, 115, 22, .25);
+    }
+
+    .btn-danger-sm:hover {
+      background: rgba(249, 115, 22, .1);
+      border-color: var(--accent3);
+      color: var(--accent3);
+    }
+
+    /* ── GRID ── */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      animation: fadeUp .5s .15s ease both;
+    }
+
+    .card {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.8rem;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      border-color: rgba(0, 229, 255, .18);
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .card-title i {
+      color: var(--accent);
+      font-size: 1.15rem;
+    }
+
+    /* ── FORM ── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-bottom: .45rem;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i.icon-left {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1rem;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .input-wrap input,
+    .input-wrap select,
+    .input-wrap textarea {
+      width: 100%;
+      padding: .8rem 1rem .8rem 2.6rem;
+      background: var(--bg2);
+      border: 1px solid rgba(0, 229, 255, .1);
+      border-radius: 11px;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .92rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .input-wrap textarea {
+      padding-top: .8rem;
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .input-wrap input::placeholder,
+    .input-wrap textarea::placeholder {
+      color: rgba(240, 244, 255, .28);
+    }
+
+    .input-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, .1);
+    }
+
+    /* الـ Error State المتقدمة للحقول */
+    .input-wrap.has-error input,
+    .input-wrap.has-error textarea {
+      border-color: #ff5c5c !important;
+      box-shadow: 0 0 0 3px rgba(255, 92, 92, 0.15) !important;
+    }
+
+    .input-wrap.has-error i.icon-left {
+      color: #ff5c5c !important;
+    }
+
+    .input-wrap:focus-within i.icon-left {
+      color: var(--accent);
+    }
+
+    .input-wrap input[readonly] {
+      opacity: .6;
+      cursor: default;
+    }
+
+    .input-wrap input[readonly]:focus {
+      border-color: rgba(0, 229, 255, .1);
+      box-shadow: none;
+    }
+
+    /* no-icon inputs */
+    .no-icon input,
+    .no-icon select,
+    .no-icon textarea {
+      padding-left: 1rem;
+    }
+
+    /* ── ERROR MESSAGE UPGRADE ── */
+    .error-msg {
+      color: #ff5c5c;
+      font-size: 0.75rem;
+      margin-top: 5px;
+      display: block;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .save-row {
+      display: flex;
+      gap: .8rem;
+      margin-top: 1.4rem;
+      justify-content: flex-end;
+    }
+
+    .btn-save {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .7rem 1.6rem;
+      border-radius: 50px;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .btn-save:hover {
+      background: #33eaff;
+      box-shadow: 0 8px 24px rgba(0, 229, 255, .35);
+      transform: translateY(-1px);
+    }
+
+    .btn-save .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(0, 0, 0, .2);
+      border-top-color: var(--bg);
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+      display: none;
+    }
+
+    .btn-save.loading .btn-text {
+      display: none;
+    }
+
+    .btn-save.loading .spinner {
+      display: block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ── PASSWORD CARD ── */
+    .pwd-change-wrap {
+      display: none;
+    }
+
+    .pwd-change-wrap.open {
+      display: block;
+    }
+
+    /* ── SECURITY ── */
+    .security-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .security-item:last-child {
+      border: none;
+      padding-bottom: 0;
+    }
+
+    .sec-left {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+    }
+
+    .sec-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .sec-icon.cyan {
+      background: rgba(0, 229, 255, .1);
+      color: var(--accent);
+    }
+
+    .sec-icon.green {
+      background: rgba(0, 191, 143, .1);
+      color: #00bf8f;
+    }
+
+    .sec-icon.orange {
+      background: rgba(249, 115, 22, .1);
+      color: var(--accent3);
+    }
+
+    .sec-title {
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .sec-sub {
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: rgba(240, 244, 255, .1);
+      border-radius: 24px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: var(--muted);
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .toggle-switch input:checked+.toggle-slider {
+      background: rgba(0, 229, 255, .3);
+    }
+
+    .toggle-switch input:checked+.toggle-slider::before {
+      transform: translateX(20px);
+      background: var(--accent);
+    }
+
+    /* ── ACTIVITY FEED ── */
+    .activity-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .act-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .95rem;
+      flex-shrink: 0;
+    }
+
+    .act-dot.cyan {
+      background: rgba(0, 229, 255, .1);
+      color: var(--accent);
+    }
+
+    .act-dot.purple {
+      background: rgba(124, 58, 237, .1);
+      color: var(--accent2);
+    }
+
+    .act-dot.orange {
+      background: rgba(249, 115, 22, .1);
+      color: var(--accent3);
+    }
+
+    .act-dot.green {
+      background: rgba(0, 191, 143, .1);
+      color: #00bf8f;
+    }
+
+    .act-text {
+      font-size: .88rem;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .act-time {
+      font-size: .76rem;
+      color: var(--muted);
+      margin-top: .1rem;
+    }
+
+    /* ── DANGER ZONE ── */
+    .danger-zone {
+      border-color: rgba(249, 115, 22, .2) !important;
+    }
+
+    .danger-zone .card-title i {
+      color: var(--accent3);
+    }
+
+    .danger-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem 0;
+      border-bottom: 1px solid rgba(249, 115, 22, .1);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .danger-item:last-child {
+      border: none;
+      padding-bottom: 0;
+    }
+
+    .danger-text {
+      font-size: .88rem;
+      color: var(--muted);
+    }
+
+    .btn-danger {
+      padding: .55rem 1.2rem;
+      border-radius: 50px;
+      border: 1px solid rgba(249, 115, 22, .3);
+      background: transparent;
+      color: rgba(249, 115, 22, .8);
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-danger:hover {
+      background: rgba(249, 115, 22, .12);
+      border-color: var(--accent3);
+      color: var(--accent3);
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 420px;
+      transform: scale(.92) translateY(20px);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .modal-overlay.open .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      color: var(--white);
+    }
+
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: .4rem;
+    }
+
+    .modal-sub {
+      font-size: .88rem;
+      color: var(--muted);
+      margin-bottom: 1.4rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: .8rem;
+      justify-content: flex-end;
+      margin-top: 1.4rem;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      padding: .85rem 1.2rem;
+      border-radius: 12px;
+      font-size: .88rem;
+      font-weight: 500;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .4);
+      transform: translateX(120%);
+      transition: var(--transition);
+      max-width: 300px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.success {
+      background: rgba(0, 191, 143, .14);
+      border: 1px solid rgba(0, 191, 143, .35);
+      color: #00bf8f;
+    }
+
+    .toast.error {
+      background: rgba(249, 115, 22, .12);
+      border: 1px solid rgba(249, 115, 22, .3);
+      color: var(--accent3);
+    }
+
+    .toast.info {
+      background: rgba(0, 229, 255, .1);
+      border: 1px solid rgba(0, 229, 255, .25);
+      color: var(--accent);
+    }
+
+    @media(max-width:900px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width:640px) {
+      .nav__links {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 280px;
+        background: rgba(13, 20, 37, .98);
+        backdrop-filter: blur(30px);
+        padding: 6rem 2rem 2rem;
+        border-left: 1px solid var(--border);
+      }
+
+      .nav__links.open {
+        display: flex;
+      }
+
+      .nav__toggle {
+        display: block;
+      }
+
+      .profile-header-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .profile-badges {
+        justify-content: center;
+      }
+    }
+
+    @media(max-width:480px) {
+      .profile-header {
+        padding: 6rem 1rem 2rem;
+      }
+      .profile-header-actions {
+        justify-content: center;
+      }
+      .btn-edit {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="navbar">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">EDU<span>.</span></a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="coaching.html">Coaching</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="navAuthArea"></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><i class="uil uil-bars"
+          id="menuIcon"></i></button>
+    </div>
+  </nav>
+
+  <div class="page" id="profilePage">
+
+    <div class="profile-header">
+      <div class="profile-header-inner">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" id="bigAvatar">?</div>
+          <div class="profile-status-dot"></div>
+        </div>
+        <div class="profile-info">
+          <h1 class="profile-name" id="profileName">Loading...</h1>
+          <p class="profile-email"><i class="uil uil-envelope"></i> <span id="profileEmail">...</span></p>
+          <div class="profile-badges">
+            <span class="badge badge-member"><i class="uil uil-award"></i> Member</span>
+            <span class="badge badge-active"><i class="uil uil-circle"></i> Active</span>
+          </div>
+          <div class="profile-header-actions">
+            <button class="btn-edit btn-primary-sm" onclick="scrollToEdit()"><i class="uil uil-edit"></i> Edit
+              Profile</button>
+            <button class="btn-edit btn-danger-sm" onclick="logout()"><i class="uil uil-sign-out-alt"></i>
+              Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-grid">
+
+      <div class="card" id="editSection">
+        <div class="card-title"><i class="uil uil-user-circle"></i> Personal Information</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name</label>
+            <div class="input-wrap" id="nameWrap">
+              <input type="text" id="editName" placeholder="Your full name" />
+              <i class="uil uil-user icon-left"></i>
+            </div>
+            <small class="error-msg" id="nameError"></small>
+          </div>
+          <div class="form-group">
+            <label>Username</label>
+            <div class="input-wrap" id="usernameWrap">
+              <input type="text" id="editUsername" placeholder="@handle" />
+              <i class="uil uil-at icon-left"></i>
+            </div>
+            <small class="error-msg" id="usernameError"></small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-wrap" id="emailWrap">
+            <input type="email" id="editEmail" placeholder="you@example.com" />
+            <i class="uil uil-envelope icon-left"></i>
+          </div>
+          <small class="error-msg" id="emailError"></small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone</label>
+            <div class="input-wrap" id="phoneWrap">
+              <input type="tel" id="editPhone" placeholder="01xxxxxxxxx" maxlength="11" />
+              <i class="uil uil-phone icon-left"></i>
+            </div>
+            <small class="error-msg" id="phoneError"></small>
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <div class="input-wrap">
+              <input type="text" id="editLocation" placeholder="Cairo, Egypt" />
+              <i class="uil uil-map-marker icon-left"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Bio</label>
+          <div class="input-wrap no-icon">
+            <textarea id="editBio" placeholder="Tell us a little about yourself..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Website / Portfolio</label>
+          <div class="input-wrap" id="websiteWrap">
+            <input type="url" id="editWebsite" placeholder="https://yoursite.com" />
+            <i class="uil uil-link icon-left"></i>
+          </div>
+          <small class="error-msg" id="websiteError"></small>
+        </div>
+
+        <div class="save-row">
+          <button class="btn-save" id="saveProfileBtn" onclick="saveProfile()">
+            <span class="btn-text"><i class="uil uil-check"></i> Save Changes</span>
+            <div class="spinner"></div>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="uil uil-shield-check"></i> Security</div>
+
+        <div class="form-group">
+          <label>Current Password</label>
+          <div class="input-wrap" id="curPwdWrap">
+            <input type="password" id="curPwd" placeholder="Enter current password" />
+            <i class="uil uil-lock icon-left"></i>
+          </div>
+          <small class="error-msg" id="curPwdError"></small>
+        </div>
+        <div class="form-group">
+          <label>New Password</label>
+          <div class="input-wrap" id="newPwdWrap">
+            <input type="password" id="newPwd" placeholder="Min. 6 characters" />
+            <i class="uil uil-lock-alt icon-left"></i>
+          </div>
+          <small class="error-msg" id="newPwdError"></small>
+        </div>
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <div class="input-wrap" id="confPwdWrap">
+            <input type="password" id="confPwd" placeholder="Repeat new password" />
+            <i class="uil uil-lock-alt icon-left"></i>
+          </div>
+          <small class="error-msg" id="confPwdError"></small>
+        </div>
+        <div class="save-row">
+          <button class="btn-save" id="savePwdBtn" onclick="changePassword()">
+            <span class="btn-text"><i class="uil uil-key-skeleton"></i> Update Password</span>
+            <div class="spinner"></div>
+          </button>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:1.5rem 0;">
+
+        <div class="security-item">
+          <div class="sec-left">
+            <div class="sec-icon cyan"><i class="uil uil-bell"></i></div>
+            <div>
+              <div class="sec-title">Email Notifications</div>
+              <div class="sec-sub">Get updates about your courses</div>
+            </div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="togNotif" checked /><span
+              class="toggle-slider"></span></label>
+        </div>
+        <div class="security-item">
+          <div class="sec-left">
+            <div class="sec-icon green"><i class="uil uil-shield"></i></div>
+            <div>
+              <div class="sec-title">Two-Factor Auth</div>
+              <div class="sec-sub">Extra layer of security</div>
+            </div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="tog2fa" /><span class="toggle-slider"></span></label>
+        </div>
+        <div class="security-item">
+          <div class="sec-left">
+            <div class="sec-icon orange"><i class="uil uil-eye-slash"></i></div>
+            <div>
+              <div class="sec-title">Profile Visibility</div>
+              <div class="sec-sub">Hide profile from public</div>
+            </div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="togPrivate" /><span
+              class="toggle-slider"></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="uil uil-history"></i> Recent Activity</div>
+        <ul class="activity-list" id="activityList">
+          <li class="activity-item">
+            <div class="act-dot cyan"><i class="uil uil-sign-in-alt"></i></div>
+            <div>
+              <div class="act-text">Logged in successfully</div>
+              <div class="act-time">Just now</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="act-dot purple"><i class="uil uil-user-plus"></i></div>
+            <div>
+              <div class="act-text">Account created</div>
+              <div class="act-time" id="joinedDate">—</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="act-dot orange"><i class="uil uil-book-open"></i></div>
+            <div>
+              <div class="act-text">Browsed Courses</div>
+              <div class="act-time">Recently</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="act-dot green"><i class="uil uil-star"></i></div>
+            <div>
+              <div class="act-text">Profile completed</div>
+              <div class="act-time">Today</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card danger-zone">
+        <div class="card-title"><i class="uil uil-exclamation-triangle"></i> Danger Zone</div>
+        <div class="danger-item">
+          <div>
+            <div class="sec-title">Sign out of account</div>
+            <div class="danger-text">End your current session on this device.</div>
+          </div>
+          <button class="btn-danger" onclick="logout()"><i class="uil uil-sign-out-alt"></i> Logout</button>
+        </div>
+        <div class="danger-item">
+          <div>
+            <div class="sec-title">Delete account</div>
+            <div class="danger-text">Permanently remove your account and all associated data. This cannot be undone.
+            </div>
+          </div>
+          <button class="btn-danger" onclick="openDeleteModal()"><i class="uil uil-trash"></i> Delete Account</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeDeleteModal()" aria-label="Close"><i class="uil uil-times"></i></button>
+      <div class="modal-title">⚠️ Delete Account</div>
+      <div class="modal-sub">This action is permanent and cannot be undone. All your data will be erased from this
+        device.</div>
+      <div class="form-group">
+        <label>Type your email to confirm</label>
+        <div class="input-wrap no-icon"><input type="email" id="deleteConfirmEmail" placeholder="your@email.com" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-save ghost" style="background:transparent;color:var(--muted);border:1px solid var(--border);"
+          onclick="closeDeleteModal()">Cancel</button>
+        <button class="btn-danger" onclick="confirmDelete()" style="padding:.65rem 1.4rem;border-radius:50px;">Yes,
+          Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ══════════════════════════════════════════════
+    //  UTILS
+    // ══════════════════════════════════════════════
+    function showToast(msg, type = 'info') {
+      const t = document.getElementById('toast');
+      const icons = { success: 'uil-check-circle', error: 'uil-exclamation-circle', info: 'uil-info-circle' };
+      t.innerHTML = `<i class="uil ${icons[type] || icons.info}"></i> ${msg}`;
+      t.className = `toast ${type} show`;
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    function setLoading(btn, on) {
+      btn.classList.toggle('loading', on);
+      btn.disabled = on;
+    }
+
+    function setFieldError(inputId, wrapId, errorId, errorMsg) {
+      const wrapEl = document.getElementById(wrapId);
+      const errorEl = document.getElementById(errorId);
+
+      if (errorMsg) {
+        wrapEl.classList.add('has-error');
+        errorEl.textContent = errorMsg;
+        return false;
+      } else {
+        wrapEl.classList.remove('has-error');
+        errorEl.textContent = "";
+        return true;
+      }
+    }
+
+    // ══════════════════════════════════════════════
+    //  NAV
+    // ══════════════════════════════════════════════
+    const navbar = document.getElementById('navbar');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const menuIcon = document.getElementById('menuIcon');
+
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 30));
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuIcon.className = open ? 'uil uil-multiply' : 'uil uil-bars';
+    });
+
+    function renderNavAuth() {
+      const area = document.getElementById('navAuthArea');
+      const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (!user) { area.innerHTML = `<a href="login.html" class="nav__cta">Login</a>`; return; }
+      const initials = user.name ? user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) : 'U';
+      area.innerHTML = `
+      <div class="nav__user">
+        <div class="nav__user-avatar" id="userAvatarBtn">${initials}</div>
+        <span class="nav__user-name">Hi, ${user.name ? user.name.split(' ')[0] : 'User'}</span>
+        <div class="nav__dropdown" id="navDropdown">
+          <a href="profile.html"><i class="uil uil-user-circle"></i> My Profile</a>
+          <button class="logout-btn" onclick="logout()"><i class="uil uil-sign-out-alt"></i> Logout</button>
+        </div>
+      </div>`;
+      document.getElementById('userAvatarBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        document.getElementById('navDropdown').classList.toggle('open');
+      });
+      document.addEventListener('click', () => document.getElementById('navDropdown')?.classList.remove('open'));
+    }
+    renderNavAuth();
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'index.html';
+    }
+
+    // ══════════════════════════════════════════════
+    //  LOAD PROFILE DATA
+    // ══════════════════════════════════════════════
+    let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+    if (!currentUser) {
+      window.location.href = 'login.html';
+    }
+
+    function loadProfile() {
+      if (!currentUser) return;
+
+      // Header
+      const initials = currentUser.name ? currentUser.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) : 'U';
+      document.getElementById('bigAvatar').textContent = initials;
+      document.getElementById('profileName').textContent = currentUser.name || 'User';
+      document.getElementById('profileEmail').textContent = currentUser.email || '...';
+
+      const joined = currentUser.joinedAt ? new Date(currentUser.joinedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Today';
+      document.getElementById('joinedDate').textContent = joined;
+
+      // Fill form fields
+      document.getElementById('editName').value = currentUser.name || '';
+      document.getElementById('editUsername').value = currentUser.username || '';
+      document.getElementById('editEmail').value = currentUser.email || '';
+      document.getElementById('editPhone').value = currentUser.phone || '';
+      document.getElementById('editLocation').value = currentUser.location || '';
+      document.getElementById('editBio').value = currentUser.bio || '';
+      document.getElementById('editWebsite').value = currentUser.website || '';
+
+      // Toggles
+      document.getElementById('togNotif').checked = currentUser.notif !== false;
+      document.getElementById('tog2fa').checked = currentUser.twofa || false;
+      document.getElementById('togPrivate').checked = currentUser.private || false;
+    }
+    loadProfile();
+
+    // ══════════════════════════════════════════════
+    //  REAL-TIME & FORM VALIDATION (UPDATED)
+    // ══════════════════════════════════════════════
+
+    function validateName() {
+      const name = document.getElementById('editName').value.trim();
+      if (name.length < 3) {
+        return setFieldError('editName', 'nameWrap', 'nameError', "Name must be at least 3 characters.");
+      }
+      return setFieldError('editName', 'nameWrap', 'nameError', "");
+    }
+
+    function validateUsername() {
+      const username = document.getElementById('editUsername').value.trim();
+      if (username.length < 3) {
+        return setFieldError('editUsername', 'usernameWrap', 'usernameError', "Username must be at least 3 characters.");
+      }
+      if (username.includes(" ")) {
+        return setFieldError('editUsername', 'usernameWrap', 'usernameError', "Spaces are not allowed in usernames.");
+      }
+      return setFieldError('editUsername', 'usernameWrap', 'usernameError', "");
+    }
+
+    function validateEmail() {
+      const email = document.getElementById('editEmail').value.trim();
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        return setFieldError('editEmail', 'emailWrap', 'emailError', "Please enter a valid, complete email address (e.g., name@domain.com).");
+      }
+      return setFieldError('editEmail', 'emailWrap', 'emailError', "");
+    }
+
+    function validatePhone() {
+      const phone = document.getElementById('editPhone').value.trim();
+      const phoneRegex = /^01[0125]\d{8}$/;
+
+      if (!phone) {
+        return setFieldError('editPhone', 'phoneWrap', 'phoneError', "Phone number is required.");
+      }
+      if (!phoneRegex.test(phone)) {
+        return setFieldError('editPhone', 'phoneWrap', 'phoneError', "Must be a valid Egyptian mobile number consisting of 11 digits (starts with 010, 011, 012, 015).");
+      }
+      return setFieldError('editPhone', 'phoneWrap', 'phoneError', "");
+    }
+
+    function validateWebsite() {
+      const website = document.getElementById('editWebsite').value.trim();
+      if (website && !website.startsWith("http://") && !website.startsWith("https://")) {
+        return setFieldError('editWebsite', 'websiteWrap', 'websiteError', "Website must start with http:// or https://");
+      }
+      return setFieldError('editWebsite', 'websiteWrap', 'websiteError', "");
+    }
+
+    document.getElementById('editName').addEventListener('input', validateName);
+    document.getElementById('editUsername').addEventListener('input', validateUsername);
+    document.getElementById('editEmail').addEventListener('input', validateEmail);
+    document.getElementById('editPhone').addEventListener('input', validatePhone);
+    document.getElementById('editWebsite').addEventListener('input', validateWebsite);
+
+    function validateProfileForm() {
+      const isNameValid = validateName();
+      const isUsernameValid = validateUsername();
+      const isEmailValid = validateEmail();
+      const isPhoneValid = validatePhone();
+      const isWebsiteValid = validateWebsite();
+
+      const isValid = isNameValid && isUsernameValid && isEmailValid && isPhoneValid && isWebsiteValid;
+
+      if (!isValid) {
+        showToast("Please correct the highlighted errors before saving.", "error");
+      }
+
+      return isValid;
+    }
+
+    // ══════════════════════════════════════════════
+    //  SAVE PROFILE
+    // ══════════════════════════════════════════════
+    function saveProfile() {
+      if (!validateProfileForm()) return;
+
+      const btn = document.getElementById('saveProfileBtn');
+      setLoading(btn, true);
+
+      setTimeout(() => {
+        setLoading(btn, false);
+
+        const updated = {
+          ...currentUser,
+          name: document.getElementById('editName').value.trim() || currentUser.name,
+          username: document.getElementById('editUsername').value.trim(),
+          email: document.getElementById('editEmail').value.trim() || currentUser.email,
+          phone: document.getElementById('editPhone').value.trim(),
+          location: document.getElementById('editLocation').value.trim(),
+          bio: document.getElementById('editBio').value.trim(),
+          website: document.getElementById('editWebsite').value.trim(),
+          notif: document.getElementById('togNotif').checked,
+          twofa: document.getElementById('tog2fa').checked,
+          private: document.getElementById('togPrivate').checked,
+          updatedAt: new Date().toISOString(),
+        };
+
+        localStorage.setItem('currentUser', JSON.stringify(updated));
+        currentUser = updated;
+
+        showToast('Profile saved successfully ', 'success');
+        loadProfile();
+      }, 800);
+    }
+
+    // ══════════════════════════════════════════════
+    //  CHANGE PASSWORD
+    // ══════════════════════════════════════════════
+    function changePassword() {
+      const btn = document.getElementById('savePwdBtn');
+      const curPwd = document.getElementById('curPwd').value;
+      const newPwd = document.getElementById('newPwd').value;
+      const confPwd = document.getElementById('confPwd').value;
+
+      let isPwdValid = true;
+
+      setFieldError('curPwd', 'curPwdWrap', 'curPwdError', "");
+      setFieldError('newPwd', 'newPwdWrap', 'newPwdError', "");
+      setFieldError('confPwd', 'confPwdWrap', 'confPwdError', "");
+
+      if (!curPwd) {
+        setFieldError('curPwd', 'curPwdWrap', 'curPwdError', "Current password is required.");
+        isPwdValid = false;
+      } else if (curPwd !== currentUser.password) {
+        setFieldError('curPwd', 'curPwdWrap', 'curPwdError', "Current password is incorrect.");
+        isPwdValid = false;
+      }
+
+      if (!newPwd) {
+        setFieldError('newPwd', 'newPwdWrap', 'newPwdError', "New password is required.");
+        isPwdValid = false;
+      } else if (newPwd.length < 6) {
+        setFieldError('newPwd', 'newPwdWrap', 'newPwdError', "New password must be at least 6 characters.");
+        isPwdValid = false;
+      }
+
+      if (!confPwd) {
+        setFieldError('confPwd', 'confPwdWrap', 'confPwdError', "Please confirm your new password.");
+        isPwdValid = false;
+      } else if (newPwd !== confPwd) {
+        setFieldError('confPwd', 'confPwdWrap', 'confPwdError', "Passwords do not match.");
+        isPwdValid = false;
+      }
+
+      if (!isPwdValid) return;
+
+      setLoading(btn, true);
+      setTimeout(() => {
+        setLoading(btn, false);
+
+        const updated = { ...currentUser, password: newPwd, updatedAt: new Date().toISOString() };
+        localStorage.setItem('currentUser', JSON.stringify(updated));
+        currentUser = updated;
+
+        document.getElementById('curPwd').value = '';
+        document.getElementById('newPwd').value = '';
+        document.getElementById('confPwd').value = '';
+
+        showToast('Password updated ', 'success');
+      }, 800);
+    }
+
+    // ══════════════════════════════════════════════
+    //  DELETE ACCOUNT
+    // ══════════════════════════════════════════════
+    function openDeleteModal() { document.getElementById('deleteModal').classList.add('open'); }
+    function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('open'); }
+
+    function confirmDelete() {
+      const typed = document.getElementById('deleteConfirmEmail').value.trim();
+      if (typed !== currentUser.email) { showToast('Email does not match', 'error'); return; }
+
+      localStorage.removeItem('currentUser');
+
+      showToast('Account deleted. Redirecting...', 'info');
+      setTimeout(() => window.location.href = 'index.html', 1500);
+    }
+
+    // ══════════════════════════════════════════════
+    //  SCROLL TO EDIT
+    // ══════════════════════════════════════════════
+    function scrollToEdit() {
+      document.getElementById('editSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => document.getElementById('editName').focus(), 600);
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Basics for Beginners — EDU</title>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.2.0/css/line.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── DESIGN SYSTEM (same as index.html) ─── */
+    :root {
+      --bg:     #080c14;
+      --bg1:    #0d1425;
+      --bg2:    #111b30;
+      --bg3:    #161f38;
+      --accent: #00e5ff;
+      --accent2:#7c3aed;
+      --accent3:#f97316;
+      --white:  #f0f4ff;
+      --muted:  rgba(240,244,255,0.55);
+      --border: rgba(0,229,255,0.12);
+      --glow:   0 0 40px rgba(0,229,255,0.15);
+      --primary:   #6c63ff;
+      --success:   #00bf8e;
+      --danger:    #f75842;
+      --warning:   #f7c94b;
+      --radius: 16px;
+      --transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'DM Sans',sans-serif;
+      background:var(--bg);
+      color:var(--white);
+      line-height:1.7;
+      overflow-x:hidden;
+    }
+
+    body::before {
+      content:'';
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124,58,237,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0,229,255,0.10) 0%, transparent 60%);
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .particles { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+    .particle  { position:absolute; border-radius:50%; animation:float-particle linear infinite; opacity:0; }
+    @keyframes float-particle {
+      0%   { transform:translateY(100vh) scale(0); opacity:0; }
+      10%  { opacity:1; }
+      90%  { opacity:0.6; }
+      100% { transform:translateY(-10vh) scale(1.2); opacity:0; }
+    }
+
+    .container { max-width:1200px; margin:0 auto; padding:0 2rem; position:relative; z-index:1; }
+
+    /* ─── NAV ─── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      padding:1.2rem 0; transition:var(--transition);
+    }
+    nav.scrolled {
+      background:rgba(8,12,20,0.88);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      padding:0.8rem 0;
+    }
+    .nav__container {
+      max-width:1200px; margin:0 auto; padding:0 2rem;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav__logo {
+      font-family:'Syne',sans-serif; font-weight:800; font-size:1.6rem;
+      color:var(--white); text-decoration:none; letter-spacing:-1px;
+    }
+    .nav__logo span { color:var(--accent); }
+    .nav__links { display:flex; list-style:none; gap:2.5rem; align-items:center; }
+    .nav__links a {
+      color:var(--muted); text-decoration:none; font-size:0.9rem;
+      font-weight:500; letter-spacing:0.3px; transition:var(--transition); position:relative;
+    }
+    .nav__links a::after {
+      content:''; position:absolute; bottom:-4px; left:0;
+      width:0; height:2px; background:var(--accent); border-radius:2px; transition:var(--transition);
+    }
+    .nav__links a:hover { color:var(--white); }
+    .nav__links a:hover::after { width:100%; }
+    .nav__cta {
+      background:var(--accent) !important; color:var(--bg) !important;
+      padding:0.6rem 1.4rem !important; border-radius:50px; font-weight:700 !important;
+    }
+    .nav__cta::after { display:none !important; }
+    .nav__cta:hover { background:#33eaff !important; transform:translateY(-1px); box-shadow:0 8px 25px rgba(0,229,255,0.4); }
+    .nav__user { display:flex; align-items:center; gap:.75rem; position:relative; }
+    .nav__user-avatar {
+      width:36px; height:36px; border-radius:50%;
+      background:linear-gradient(135deg,var(--accent2),var(--accent));
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem;
+      color:var(--white); cursor:pointer; border:2px solid var(--border); transition:var(--transition);
+    }
+    .nav__user-avatar:hover { border-color:var(--accent); box-shadow:0 0 15px rgba(0,229,255,.3); }
+    .nav__user-name { font-size:.9rem; font-weight:500; color:var(--white); }
+    .nav__dropdown {
+      position:absolute; top:calc(100% + 12px); right:0;
+      background:var(--bg1); border:1px solid var(--border); border-radius:12px;
+      min-width:160px; padding:.5rem; box-shadow:0 20px 50px rgba(0,0,0,.5);
+      opacity:0; pointer-events:none; transform:translateY(-8px); transition:var(--transition);
+    }
+    .nav__dropdown.open { opacity:1; pointer-events:all; transform:translateY(0); }
+    .nav__dropdown a, .nav__dropdown button {
+      display:flex; align-items:center; gap:.6rem; width:100%; padding:.55rem .9rem;
+      border-radius:8px; font-size:.88rem; color:var(--muted); background:none; border:none;
+      cursor:pointer; text-decoration:none; transition:var(--transition); font-family:'DM Sans',sans-serif;
+    }
+    .nav__dropdown a:hover, .nav__dropdown button:hover { background:rgba(0,229,255,.07); color:var(--white); }
+    .nav__dropdown .logout-btn { color:rgba(249,115,22,.75); }
+    .nav__dropdown .logout-btn:hover { background:rgba(249,115,22,.1); color:var(--accent3); }
+    .nav__toggle { display:none; background:none; border:none; color:var(--white); font-size:1.5rem; cursor:pointer; }
+
+    /* ─── COURSE HERO ─── */
+    .course-hero {
+      padding: 9rem 0 4rem;
+      position:relative; z-index:1;
+    }
+    .course-hero::after {
+      content:'';
+      position:absolute; bottom:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .hero-inner {
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:5rem;
+      align-items:center;
+    }
+
+    /* breadcrumb */
+    .breadcrumb {
+      display:flex; align-items:center; gap:0.5rem;
+      font-size:0.82rem; color:var(--muted); margin-bottom:1.5rem;
+    }
+    .breadcrumb a { color:var(--accent); text-decoration:none; transition:var(--transition); }
+    .breadcrumb a:hover { color:#33eaff; }
+    .breadcrumb i { font-size:0.75rem; }
+
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      background:rgba(247,201,75,0.1); border:1px solid rgba(247,201,75,0.25);
+      color:var(--warning); padding:0.35rem 1rem; border-radius:50px;
+      font-size:0.78rem; font-weight:700; letter-spacing:0.5px; margin-bottom:1.2rem;
+    }
+    .course-title {
+      font-family:'Syne',sans-serif;
+      font-size:clamp(2.2rem,4vw,3.4rem);
+      font-weight:800; letter-spacing:-1.5px; line-height:1.1;
+      margin-bottom:1.2rem;
+    }
+    .course-title span { color:var(--accent); }
+
+    .hero-desc {
+      color:var(--muted); font-size:1rem; line-height:1.8;
+      max-width:560px; margin-bottom:2rem;
+    }
+
+    .hero-meta {
+      display:flex; flex-wrap:wrap; gap:1.5rem;
+      margin-bottom:2rem; padding-bottom:2rem;
+      border-bottom:1px solid var(--border);
+    }
+    .meta-item {
+      display:flex; align-items:center; gap:0.5rem;
+      font-size:0.85rem; color:var(--muted);
+    }
+    .meta-item i { color:var(--accent); font-size:1rem; }
+    .meta-item strong { color:var(--white); }
+
+    .instructor-mini {
+      display:flex; align-items:center; gap:1rem;
+    }
+    .instructor-mini img {
+      width:52px; height:52px; border-radius:50%;
+      border:2px solid var(--accent); object-fit:cover;
+    }
+    .inst-mini-name { font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; }
+    .inst-mini-role { color:var(--accent); font-size:0.8rem; font-weight:600; }
+
+    /* Hero Card */
+    .hero-card {
+      background:var(--bg1); border:1px solid var(--border);
+      border-radius:20px; overflow:hidden;
+      box-shadow:var(--glow), 0 40px 80px rgba(0,0,0,0.4);
+      animation:heroFloat 6s ease-in-out infinite;
+      position:relative;
+    }
+    @keyframes heroFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .hero-card-img {
+      width:100%; height:220px; object-fit:cover;
+    }
+    .hero-card-body { padding:1.8rem; }
+    .hero-card-price {
+      font-family:'Syne',sans-serif; font-size:2rem; font-weight:800;
+      margin-bottom:1rem;
+    }
+    .hero-card-price .free { color:var(--accent); }
+    .hero-card-price .original {
+      font-size:1rem; font-weight:400; color:var(--muted);
+      text-decoration:line-through; margin-left:0.5rem;
+    }
+    .enroll-btn {
+      display:block; width:100%; text-align:center;
+      background:var(--accent); color:var(--bg);
+      padding:1rem; border-radius:12px; font-family:'Syne',sans-serif;
+      font-weight:700; font-size:1rem; text-decoration:none;
+      transition:var(--transition); margin-bottom:1rem;
+    }
+    .enroll-btn:hover { background:#33eaff; transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,229,255,0.4); }
+    .card-includes { list-style:none; }
+    .card-includes li {
+      display:flex; align-items:center; gap:0.6rem;
+      font-size:0.85rem; color:var(--muted); padding:0.45rem 0;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .card-includes li:last-child { border-bottom:none; }
+    .card-includes li i { color:var(--success); }
+
+    /* ─── TABS ─── */
+    .tabs {
+      position:sticky; top:4.5rem; z-index:90;
+      display:flex; justify-content:center; gap:8px; flex-wrap:wrap;
+      background:rgba(8,12,20,0.92);
+      backdrop-filter:blur(20px);
+      padding:16px 20px;
+      border-bottom:1px solid var(--border);
+    }
+    .tab-btn {
+      padding:10px 26px; border:none; border-radius:30px;
+      background:transparent; color:var(--muted);
+      cursor:pointer; transition:var(--transition);
+      font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700;
+      letter-spacing:0.03em;
+    }
+    .tab-btn.active { background:var(--accent); color:var(--bg); }
+    .tab-btn:hover:not(.active) { background:rgba(0,229,255,0.08); color:var(--white); }
+
+    /* ─── TAB SECTIONS ─── */
+    .tab-section { display:none; padding:80px 0; }
+    .tab-section.active { display:block; }
+    .section-title {
+      font-family:'Syne',sans-serif; font-size:1.9rem; font-weight:800;
+      margin-bottom:50px; position:relative; display:inline-block; letter-spacing:-0.5px;
+    }
+    .section-title::after {
+      content:''; position:absolute; bottom:-10px; left:0;
+      width:40px; height:3px; background:var(--accent); border-radius:4px;
+    }
+
+    /* ─── INSTRUCTOR TAB ─── */
+    .instructor-card {
+      background:var(--bg1); border-radius:20px; padding:40px;
+      display:flex; gap:40px; flex-wrap:wrap;
+      border:1px solid var(--border);
+    }
+    .inst-avatar img { width:140px; height:140px; border-radius:50%; border:3px solid var(--accent); object-fit:cover; }
+    .inst-info { flex:1; min-width:260px; }
+    .inst-name { font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:4px; }
+    .inst-role { color:var(--accent); font-family:'Syne',sans-serif; font-weight:600; font-size:0.9rem; margin-bottom:20px; }
+    .inst-stats { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:20px; }
+    .i-stat {
+      background:var(--bg2); padding:14px 20px; border-radius:12px;
+      text-align:center; border:1px solid var(--border);
+    }
+    .i-stat-num { font-size:1.3rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--warning); }
+    .i-stat-label { font-size:0.78rem; color:var(--muted); margin-top:3px; }
+    .inst-bio { color:var(--muted); line-height:1.8; font-size:0.92rem; }
+
+    /* ─── MATERIALS TAB ─── */
+    .materials-header {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      margin-bottom:40px; flex-wrap:wrap; gap:20px;
+    }
+    .materials-filter { display:flex; gap:8px; flex-wrap:wrap; }
+    .filter-btn {
+      padding:7px 18px; border-radius:20px; border:1.5px solid rgba(255,255,255,0.1);
+      background:transparent; color:rgba(255,255,255,0.6);
+      cursor:pointer; font-size:0.82rem; transition:var(--transition);
+      font-family:'DM Sans',sans-serif;
+    }
+    .filter-btn.active, .filter-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(0,229,255,0.08); }
+
+    .materials-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+      gap:20px;
+    }
+    .material-card {
+      background:var(--bg1); border:1px solid var(--border);
+      border-radius:var(--radius); padding:28px;
+      cursor:pointer; transition:transform .3s, box-shadow .3s, border-color .3s;
+      position:relative; overflow:hidden;
+    }
+    .material-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+      background:linear-gradient(90deg,var(--accent),transparent);
+      transform:scaleX(0); transform-origin:left; transition:transform .3s;
+    }
+    .material-card:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,.35); border-color:rgba(0,229,255,0.25); }
+    .material-card:hover::before { transform:scaleX(1); }
+
+    .mat-icon-wrap {
+      width:56px; height:56px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.6rem; margin-bottom:18px;
+    }
+    .mat-type-pdf .mat-icon-wrap  { background:rgba(247,88,66,.1); }
+    .mat-type-zip .mat-icon-wrap  { background:rgba(247,201,75,.1); }
+    .mat-type-psd .mat-icon-wrap  { background:rgba(108,99,255,.1); }
+    .mat-type-figma .mat-icon-wrap{ background:rgba(255,100,130,.1); }
+    .mat-type-code .mat-icon-wrap { background:rgba(0,191,142,.1); }
+
+    .mat-meta { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+    .mat-tag {
+      font-size:.7rem; font-weight:700; letter-spacing:.06em;
+      padding:3px 10px; border-radius:20px; font-family:'Syne',sans-serif;
+    }
+    .mat-tag-pdf   { background:rgba(247,88,66,.12); color:var(--danger); }
+    .mat-tag-zip   { background:rgba(247,201,75,.12); color:var(--warning); }
+    .mat-tag-figma { background:rgba(255,100,130,.12); color:#ff6482; }
+    .mat-tag-code  { background:rgba(0,191,142,.12); color:var(--success); }
+    .mat-size { font-size:.78rem; color:var(--muted); margin-left:auto; }
+    .mat-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1.05rem; margin-bottom:8px; }
+    .mat-desc  { font-size:.875rem; color:var(--muted); line-height:1.6; margin-bottom:20px; }
+    .mat-footer { display:flex; align-items:center; justify-content:space-between; }
+    .mat-module { font-size:.78rem; color:var(--muted); }
+    .download-btn {
+      display:flex; align-items:center; gap:6px;
+      padding:8px 18px; border-radius:8px;
+      background:rgba(0,229,255,.08); border:1px solid rgba(0,229,255,.2);
+      color:var(--accent); cursor:pointer; font-size:.82rem; font-weight:600;
+      transition:var(--transition); font-family:'DM Sans',sans-serif;
+    }
+    .download-btn:hover { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+
+    /* ─── VIDEOS TAB ─── */
+    .videos-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:30px; flex-wrap:wrap; gap:20px; }
+    .videos-search {
+      display:flex; align-items:center; gap:10px;
+      background:var(--bg1); border:1px solid var(--border);
+      border-radius:10px; padding:10px 16px; width:260px;
+    }
+    .videos-search input { background:transparent; border:none; outline:none; color:var(--white); font-family:'DM Sans',sans-serif; font-size:.9rem; width:100%; }
+    .videos-search input::placeholder { color:rgba(255,255,255,.3); }
+
+    .vid-progress-bar {
+      background:rgba(255,255,255,.04); border-radius:12px; padding:20px 28px;
+      margin-bottom:30px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;
+      border:1px solid var(--border);
+    }
+    .vid-prog-label  { font-family:'Syne',sans-serif; font-size:.9rem; color:var(--muted); }
+    .vid-prog-track  { flex:1; min-width:200px; height:6px; background:rgba(255,255,255,.08); border-radius:6px; overflow:hidden; }
+    .vid-prog-fill   { height:100%; width:0; background:linear-gradient(90deg,var(--accent2),var(--accent)); border-radius:6px; transition:width 1.2s ease; }
+    .vid-prog-count  { font-family:'Syne',sans-serif; font-weight:700; font-size:.95rem; }
+    .vid-prog-count span { color:var(--accent); }
+
+    .chapter-group   { margin-bottom:10px; }
+    .chapter-header  {
+      display:flex; align-items:center; gap:14px; padding:16px 20px;
+      background:var(--bg1); border:1px solid var(--border); border-radius:12px;
+      cursor:pointer; transition:var(--transition); user-select:none;
+    }
+    .chapter-header:hover { background:var(--bg2); border-color:rgba(0,229,255,.2); }
+    .chapter-header.open  { border-radius:12px 12px 0 0; border-bottom-color:rgba(0,229,255,.2); background:var(--bg2); }
+    .chap-number { font-family:'Syne',sans-serif; font-weight:800; font-size:.8rem; color:var(--accent); background:rgba(0,229,255,.1); padding:4px 10px; border-radius:6px; }
+    .chap-title  { font-family:'Syne',sans-serif; font-weight:700; font-size:.95rem; flex:1; }
+    .chap-count  { font-size:.8rem; color:var(--muted); }
+    .chap-arrow  { font-size:.9rem; color:var(--muted); transition:transform .3s ease; }
+    .chapter-header.open .chap-arrow { transform:rotate(90deg); }
+
+    .chapter-videos {
+      background:rgba(255,255,255,.02); border:1px solid rgba(0,229,255,.15); border-top:none;
+      border-radius:0 0 12px 12px; overflow:hidden; max-height:0; transition:max-height .4s ease;
+    }
+    .chapter-videos.open { max-height:1000px; }
+
+    .video-item {
+      display:flex; align-items:center; gap:18px; padding:16px 22px;
+      border-bottom:1px solid rgba(255,255,255,.04); cursor:pointer; transition:var(--transition);
+    }
+    .video-item:last-child { border-bottom:none; }
+    .video-item:hover { background:rgba(0,229,255,.05); }
+
+    .vid-num {
+      width:32px; height:32px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Syne',sans-serif; font-weight:800; font-size:.8rem;
+    }
+    .vid-num.done    { background:rgba(0,191,142,.12); color:var(--success); }
+    .vid-num.playing { background:var(--accent); color:var(--bg); }
+    .vid-num.todo    { background:rgba(255,255,255,.06); color:rgba(255,255,255,.5); }
+    .vid-num.locked  { background:rgba(255,255,255,.05); color:var(--muted); }
+
+    .vid-thumb {
+      width:70px; height:46px; border-radius:8px; flex-shrink:0; overflow:hidden;
+      background:linear-gradient(135deg,var(--bg2),var(--bg3));
+      display:flex; align-items:center; justify-content:center; font-size:1.1rem; position:relative;
+    }
+    .vid-duration-tag {
+      position:absolute; bottom:3px; right:4px;
+      background:rgba(0,0,0,.7); color:#fff; font-size:.6rem;
+      padding:1px 5px; border-radius:4px; font-family:'Syne',sans-serif;
+    }
+    .vid-info { flex:1; min-width:0; }
+    .vid-title { font-family:'Syne',sans-serif; font-weight:600; font-size:.9rem; margin-bottom:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .vid-sub   { display:flex; align-items:center; gap:12px; font-size:.78rem; color:var(--muted); }
+    .vid-sub .pill { padding:2px 9px; border-radius:10px; font-size:.7rem; background:rgba(0,191,142,.1); color:var(--success); }
+    .vid-sub .pill.preview { background:rgba(0,229,255,.1); color:var(--accent); }
+
+    /* ─── Q&A TAB ─── */
+    .ask-box {
+      background:var(--bg1); border-radius:var(--radius); padding:30px;
+      margin-bottom:40px; border:1px solid var(--border);
+    }
+    .ask-box h3 { font-family:'Syne',sans-serif; margin-bottom:14px; }
+    .ask-box textarea {
+      width:100%; background:var(--bg2); border:1px solid var(--border);
+      border-radius:10px; color:var(--white); padding:14px; font-family:'DM Sans',sans-serif;
+      font-size:.9rem; resize:none; outline:none; margin-bottom:14px;
+      transition:border-color .3s;
+    }
+    .ask-box textarea:focus { border-color:var(--accent); }
+    .ask-btn {
+      padding:12px 28px; background:var(--accent); color:var(--bg); border:none;
+      border-radius:10px; cursor:pointer; font-family:'Syne',sans-serif;
+      font-weight:700; transition:var(--transition);
+    }
+    .ask-btn:hover { background:#33eaff; transform:translateY(-2px); }
+    .qa-list { display:flex; flex-direction:column; gap:12px; }
+    .qa-item {
+      background:var(--bg1); border-radius:var(--radius); padding:22px 26px;
+      border:1px solid var(--border); cursor:pointer; transition:var(--transition);
+    }
+    .qa-item:hover { border-color:rgba(0,229,255,.2); }
+    .qa-question { display:flex; align-items:center; gap:12px; font-family:'Syne',sans-serif; font-weight:600; font-size:.95rem; }
+    .qa-q-icon   { color:var(--accent); font-size:1.1rem; }
+    .qa-answer   { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+    .qa-item.open .qa-answer { max-height:300px; margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,.06); }
+    .qa-answer p { color:var(--muted); line-height:1.8; font-size:.9rem; }
+
+    /* ─── FOOTER ─── */
+    footer { background:var(--bg1); border-top:1px solid var(--border); padding:4rem 0 2rem; position:relative; z-index:1; }
+    .footer__inner { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
+    .footer__brand p { color:var(--muted); font-size:.88rem; margin-top:.7rem; max-width:240px; line-height:1.6; }
+    .footer__col h5 { font-family:'Syne',sans-serif; font-weight:700; font-size:.9rem; margin-bottom:1.2rem; }
+    .footer__col ul { list-style:none; }
+    .footer__col ul li { margin-bottom:.7rem; }
+    .footer__col ul li a { color:var(--muted); text-decoration:none; font-size:.88rem; transition:var(--transition); }
+    .footer__col ul li a:hover { color:var(--accent); }
+    .footer__socials { display:flex; gap:.8rem; margin-top:1.2rem; }
+    .social-link {
+      width:38px; height:38px; border-radius:10px; border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted); font-size:1rem; text-decoration:none; transition:var(--transition);
+    }
+    .social-link:hover { border-color:var(--accent); color:var(--accent); background:rgba(0,229,255,.05); transform:translateY(-2px); }
+    .footer__bottom { border-top:1px solid var(--border); padding-top:2rem; text-align:center; color:var(--muted); font-size:.82rem; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity:0; transform:translateY(40px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:1024px) {
+      .hero-inner { grid-template-columns:1fr; }
+      .hero-card  { max-width:480px; margin: 0 auto; }
+    }
+    @media (max-width:768px) {
+      .course-hero { padding: 6rem 0 3rem; }
+      .nav__links { display:none; flex-direction:column; position:fixed; top:0; right:0; bottom:0; width:280px; background:rgba(13,20,37,0.98); backdrop-filter:blur(30px); padding:6rem 2rem 2rem; border-left:1px solid var(--border); }
+      .nav__links.open { display:flex; }
+      .nav__toggle { display:block; }
+      .instructor-card { flex-direction:column; }
+      .materials-grid { grid-template-columns:1fr; }
+      .footer__inner { grid-template-columns:1fr; gap:2rem; }
+    }
+    @media (max-width:480px) {
+      .course-hero { padding: 5rem 0 2.5rem; }
+      .hero-card { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="particles" id="particles"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">EDU<span>.</span></a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="coaching.html">Coaching</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="navAuthArea"></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <i class="uil uil-bars" id="menuIcon"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- COURSE HERO -->
+  <section class="course-hero">
+    <div class="container">
+      <div class="hero-inner">
+        <!-- Left: Text -->
+        <div class="hero-left">
+          <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <i class="uil uil-angle-right"></i>
+            <a href="courses.html">Courses</a>
+            <i class="uil uil-angle-right"></i>
+            <span>Web Basics for Beginners</span>
+          </div>
+
+          <div class="hero-badge">⭐ Bestseller</div>
+
+          <h1 class="course-title">
+            HTML & <span>CSS</span> Mastery
+          </h1>
+
+          <p class="hero-desc">
+            Learn HTML & CSS from scratch and build fully responsive, modern websites using professional web development techniques. Go from zero to job-ready with hands-on projects.
+          </p>
+
+          <div class="hero-meta">
+            <div class="meta-item"><i class="uil uil-play-circle"></i> <strong>48 lessons</strong></div>
+            <div class="meta-item"><i class="uil uil-clock"></i> <strong>12 hours</strong></div>
+            <div class="meta-item"><i class="uil uil-users-alt"></i> <strong>2,340 students</strong></div>
+            <div class="meta-item"><i class="uil uil-star"></i> <strong>4.9 ★</strong></div>
+            <div class="meta-item"><i class="uil uil-signal"></i> <strong>Beginner</strong></div>
+          </div>
+
+          <div class="instructor-mini">
+            <img src="./images/tm1.jpg" alt="Shatta Wale" />
+            <div>
+              <div class="inst-mini-name">Shatta Wale</div>
+              <div class="inst-mini-role">Frontend & AI Coach</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Card -->
+        <div class="hero-card">
+          <img class="hero-card-img" src="./images/course6.jpg" alt="Web Basics for Beginners" />
+          <div class="hero-card-body">
+            <div class="hero-card-price">
+              <span class="free">Free</span>
+              <span class="original">$99</span>
+            </div>
+            <a href="#videos" class="enroll-btn" onclick="switchTab('videos')">Start Learning Now <i class="uil uil-arrow-right"></i></a>
+            <ul class="card-includes">
+              <li><i class="uil uil-check-circle"></i> 48 video lessons</li>
+              <li><i class="uil uil-check-circle"></i> Downloadable source code</li>
+              <li><i class="uil uil-check-circle"></i> Figma design files</li>
+              <li><i class="uil uil-check-circle"></i> Certificate of completion</li>
+              <li><i class="uil uil-check-circle"></i> Lifetime access</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABS NAV -->
+  <div class="tabs" id="courseTabs">
+    <button class="tab-btn active" onclick="switchTab('instructor',this)">Instructor</button>
+    <button class="tab-btn" onclick="switchTab('materials',this)">Materials</button>
+    <button class="tab-btn" onclick="switchTab('videos',this)">Videos</button>
+    <button class="tab-btn" onclick="switchTab('qa',this)">Q & A</button>
+  </div>
+
+  <!-- ── INSTRUCTOR TAB ── -->
+  <section class="tab-section active" id="instructor">
+    <div class="container">
+      <h2 class="section-title">Instructor</h2>
+      <div class="instructor-card reveal">
+        <div class="inst-avatar">
+          <img src="./images/tm1.jpg" alt="Shatta Wale" />
+        </div>
+        <div class="inst-info">
+          <div class="inst-name">Shatta Wale</div>
+          <div class="inst-role">Frontend & AI Coach</div>
+          <div class="inst-stats">
+            <div class="i-stat"><div class="i-stat-num">10+</div><div class="i-stat-label">Years Exp.</div></div>
+            <div class="i-stat"><div class="i-stat-num">50K+</div><div class="i-stat-label">Students</div></div>
+            <div class="i-stat"><div class="i-stat-num">4.9 ⭐</div><div class="i-stat-label">Rating</div></div>
+            <div class="i-stat"><div class="i-stat-num">18</div><div class="i-stat-label">Courses</div></div>
+          </div>
+          <p class="inst-bio">
+            Shatta is a dynamic frontend and AI coach dedicated to helping beginners launch their tech careers. He simplifies complex concepts like HTTP, browsers, and hosting, ensuring students build a solid foundation in modern web technologies.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MATERIALS TAB ── -->
+  <section class="tab-section" id="materials">
+    <div class="container">
+      <div class="materials-header">
+        <h2 class="section-title" style="margin-bottom:0">Course Materials</h2>
+        <div class="materials-filter" id="matFilter">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="pdf">PDF</button>
+          <button class="filter-btn" data-filter="code">Code</button>
+          <button class="filter-btn" data-filter="design">Design</button>
+          <button class="filter-btn" data-filter="assets">Assets</button>
+        </div>
+      </div>
+      <div class="materials-grid" id="materialsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ── VIDEOS TAB ── -->
+  <section class="tab-section" id="videos">
+    <div class="container">
+      <div class="videos-header">
+        <h2 class="section-title" style="margin-bottom:0">Course Videos</h2>
+        <div class="videos-search">
+          <i class="uil uil-search" style="color:var(--muted)"></i>
+          <input type="text" id="vidSearch" placeholder="Search lessons..." oninput="filterVideos(this.value)" />
+        </div>
+      </div>
+
+      <div class="vid-progress-bar">
+        <div class="vid-prog-label">Your Progress</div>
+        <div class="vid-prog-track"><div class="vid-prog-fill" id="overallProgFill"></div></div>
+        <div class="vid-prog-count" id="overallProgCount"><span>0</span> / 0 completed</div>
+      </div>
+
+      <div id="videosChapters"></div>
+    </div>
+  </section>
+
+  <!-- ── Q&A TAB ── -->
+  <section class="tab-section" id="qa">
+    <div class="container">
+      <h2 class="section-title">Questions & Answers</h2>
+      <div class="ask-box">
+        <h3>Ask Your Question</h3>
+        <textarea rows="4" placeholder="What would you like to know about this course?"></textarea>
+        <button class="ask-btn">Send Question <i class="uil uil-message"></i></button>
+      </div>
+      <div class="qa-list" id="qaList"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo">EDU<span style="color:var(--accent)">.</span></a>
+          <p>The premier platform for tech education. Learn, build, and grow with world-class instructors.</p>
+          <div class="footer__socials">
+            <a href="https://instagram.com" class="social-link" target="_blank"><i class="uil uil-instagram"></i></a>
+            <a href="https://linkedin.com"  class="social-link" target="_blank"><i class="uil uil-linkedin-alt"></i></a>
+            <a href="https://facebook.com"  class="social-link" target="_blank"><i class="uil uil-facebook-f"></i></a>
+            <a href="https://twitter.com"   class="social-link" target="_blank"><i class="uil uil-twitter-alt"></i></a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="coaching.html">Coaching</a></li>
+            <li><a href="#">Certificates</a></li>
+            <li><a href="#">Learning Paths</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Support</h5>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Community</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 EDU Platform. All rights reserved. Built with passion for learners everywhere.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ─── DATA (Enriched with real links) ─── */
+    const materials = [
+      { id:1, icon:'📄', title:'HTML5 Semantic Cheat Sheet', desc:'A comprehensive guide to all HTML5 semantic tags for better SEO.', type:'pdf', category:'pdf', size:'1.2 MB', module:'Module 1', url:'https://web.stanford.edu/group/csp/cs21/htmlcheatsheet.pdf' },
+      { id:2, icon:'💻', title:'CSS Flexbox Master Files', desc:'Boilerplate code and examples for building flexible layouts.', type:'code', category:'code', size:'0.8 MB', module:'Module 2', url:'https://github.com/h5bp/html5-boilerplate' },
+      { id:3, icon:'🎨', title:'Modern Portfolio Figma Design', desc:'Complete UI kit for your first professional portfolio project.', type:'figma', category:'design', size:'12.4 MB', module:'Module 4', url:'https://www.figma.com/community/files' },
+      { id:4, icon:'🖼️', title:'High-Res Web Assets', desc:'Optimized images and icons for all hands-on projects.', type:'zip', category:'assets', size:'45.2 MB', module:'Module 2', url:'https://github.com/topics/assets' },
+      { id:5, icon:'📘', title:'CSS Grid Layout Guide', desc:'Deep dive into CSS Grid with practical layout patterns.', type:'pdf', category:'pdf', size:'2.5 MB', module:'Module 3', url:'https://css-tricks.com/snippets/css/complete-guide-grid/' },
+      { id:6, icon:'💻', title:'Responsive Navigation Code', desc:'Reusable snippets for mobile-friendly navigation menus.', type:'code', category:'code', size:'0.3 MB', module:'Module 5', url:'https://github.com/topics/responsive-menu' }
+    ];
+
+    const chapters = [
+      {
+        id:1, title:'Getting Started', videos:[
+          { id:1, title:'Course Overview & Setup', duration:'08:24', status:'done', preview:true, url:'https://www.youtube.com/watch?v=qz0aGYrrlhU' },
+          { id:2, title:'How the Web Works', duration:'12:10', status:'done', preview:false, url:'https://www.youtube.com/watch?v=ok-plXXHlWw' },
+          { id:3, title:'Installing VS Code', duration:'05:50', status:'playing', preview:false, url:'https://www.youtube.com/watch?v=kUMe1FH4CHE' }
+        ]
+      },
+      {
+        id:2, title:'HTML Foundations', videos:[
+          { id:4, title:'HTML Document Structure', duration:'14:32', status:'todo', preview:false, url:'https://www.youtube.com/watch?v=fNcJuPIZ2WE' },
+          { id:5, title:'Semantic Tags & Accessibility', duration:'18:05', status:'todo', preview:false, url:'https://www.youtube.com/watch?v=8gWESoY8uMc' },
+          { id:6, title:'Forms & Inputs Masterclass', duration:'22:14', status:'todo', preview:false, url:'https://www.youtube.com/watch?v=fNcJuPIZ2WE' }
+        ]
+      },
+      {
+        id:3, title:'CSS Essentials', videos:[
+          { id:7, title:'Selectors & Specificity', duration:'16:20', status:'todo', preview:false, url:'https://www.youtube.com/watch?v=1PnVor36_40' },
+          { id:8, title:'Box Model Deep Dive', duration:'20:00', status:'todo', preview:false, url:'https://www.youtube.com/watch?v=rIO5326FgPE' },
+          { id:9, title:'Flexbox Complete Guide', duration:'28:45', status:'todo', preview:false, url:'https://www.youtube.com/watch?v=3YW65K6i0u8' }
+        ]
+      },
+      {
+        id:4, title:'Advanced Layouts', videos:[
+          { id:10, title:'CSS Grid Essentials', duration:'31:10', status:'todo', preview:false, url:'https://www.youtube.com/watch?v=jV8B24wq5qs' },
+          { id:11, title:'Responsive Media Queries', duration:'15:30', status:'todo', preview:false, url:'https://www.youtube.com/watch?v=srvUrASNj0s' }
+        ]
+      }
+    ];
+
+    const qaData = [
+      { q:'Do I need prior experience?', a:'No, this course is designed for absolute beginners.' },
+      { q:'Is there a certificate?', a:'Yes, you get a certificate after completing the final project.' },
+      { q:'How long do I have access?', a:'You have lifetime access to all materials and updates.' },
+      { q:'Can I download the code?', a:'Yes, all project source code is available in the Materials tab.' }
+    ];
+
+    /* ─── ORIGINAL UI LOGIC (Preserved 100%) ─── */
+    const particlesEl = document.getElementById('particles');
+    const pColors = ['#00e5ff','#7c3aed','#f97316','#00e580','#f472b6'];
+    for (let i = 0; i < 25; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 2;
+      p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${pColors[Math.floor(Math.random()*pColors.length)]};animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*15}s;`;
+      particlesEl.appendChild(p);
+    }
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+    const menuIcon  = document.getElementById('menuIcon');
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuIcon.className = open ? 'uil uil-multiply' : 'uil uil-bars';
+    });
+
+    function switchTab(id, btn) {
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      if (btn) btn.classList.add('active');
+      else {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active');
+        });
+      }
+      document.getElementById('courseTabs').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    const revObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }});
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(r => revObs.observe(r));
+
+    /* ─── RENDERING LOGIC ─── */
+    function renderMaterials(filter = 'all') {
+      const grid = document.getElementById('materialsGrid');
+      const filtered = filter === 'all' ? materials : materials.filter(m => m.category === filter);
+      grid.innerHTML = filtered.map(m => `
+        <div class="material-card mat-type-${m.type}">
+          <div class="mat-icon-wrap">${m.icon}</div>
+          <div class="mat-meta">
+            <span class="mat-tag mat-tag-${m.type}">${m.type.toUpperCase()}</span>
+            <span class="mat-size">${m.size}</span>
+          </div>
+          <div class="mat-title">${m.title}</div>
+          <div class="mat-desc">${m.desc}</div>
+          <div class="mat-footer">
+            <span class="mat-module">${m.module}</span>
+            <a href="${m.url}" target="_blank" class="download-btn"><i class="uil uil-download-alt"></i> Download</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderVideos(data) {
+      const container = document.getElementById('videosChapters');
+      const totalVids = data.reduce((a,c) => a + c.videos.length, 0);
+      const doneVids  = data.reduce((a,c) => a + c.videos.filter(v => v.status === 'done').length, 0);
+      document.getElementById('overallProgFill').style.width = totalVids ? (doneVids/totalVids*100) + '%' : '0%';
+      document.getElementById('overallProgCount').innerHTML = `<span>${doneVids}</span> / ${totalVids} completed`;
+
+      container.innerHTML = data.map((ch, ci) => `
+        <div class="chapter-group">
+          <div class="chapter-header" onclick="toggleChapter(this)" data-ci="${ci}">
+            <span class="chap-number">CH ${String(ch.id).padStart(2,'0')}</span>
+            <span class="chap-title">${ch.title}</span>
+            <span class="chap-count">${ch.videos.length} lessons</span>
+            <span class="chap-arrow">›</span>
+          </div>
+          <div class="chapter-videos ${ci === 0 ? 'open' : ''}">
+            ${ch.videos.map((v,vi) => `
+              <div class="video-item" onclick="window.open('${v.url}', '_blank')">
+                <div class="vid-num ${v.status}">${v.status === 'done' ? '✓' : v.status === 'playing' ? '▶' : v.status === 'locked' ? '🔒' : vi+1}</div>
+                <div class="vid-thumb">
+                  ${v.status !== 'locked' ? `<span>▶</span>` : `<span>🔒</span>`}
+                  <span class="vid-duration-tag">${v.duration}</span>
+                </div>
+                <div class="vid-info">
+                  <div class="vid-title">${v.title}</div>
+                  <div class="vid-sub">
+                    <span>${v.duration}</span>
+                    ${v.preview ? `<span class="pill preview">Preview</span>` : ''}
+                    ${v.status === 'done' ? `<span class="pill">✓ Done</span>` : ''}
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleChapter(header) {
+      header.classList.toggle('open');
+      header.nextElementSibling.classList.toggle('open');
+    }
+
+    function filterVideos(query) {
+      if (!query.trim()) { renderVideos(chapters); return; }
+      const q = query.toLowerCase();
+      const filtered = chapters.map(ch => ({
+        ...ch,
+        videos: ch.videos.filter(v => v.title.toLowerCase().includes(q))
+      })).filter(ch => ch.videos.length);
+      renderVideos(filtered);
+    }
+
+    function renderQA() {
+      const qaList = document.getElementById('qaList');
+      qaList.innerHTML = qaData.map(item => `
+        <div class="qa-item" onclick="this.classList.toggle('open')">
+          <div class="qa-question"><span class="qa-q-icon">?</span>${item.q}</div>
+          <div class="qa-answer"><p>${item.a}</p></div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('matFilter').addEventListener('click', e => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMaterials(btn.dataset.filter);
+    });
+
+    /* ─── INITIALIZATION ─── */
+    renderMaterials();
+    renderVideos(chapters);
+    renderQA();
+  </script>
+</body>
+</html>

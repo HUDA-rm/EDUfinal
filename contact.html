@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact — EDU Platform</title>
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.2.0/css/line.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080c14;
+        --bg1: #0d1425;
+        --bg2: #111b30;
+        --accent: #00e5ff;
+        --accent2: #7c3aed;
+        --accent3: #f97316;
+        --white: #f0f4ff;
+        --muted: rgba(240, 244, 255, 0.55);
+        --border: rgba(0, 229, 255, 0.12);
+        --glow: 0 0 40px rgba(0, 229, 255, 0.15);
+        --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--white);
+        line-height: 1.7;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 80% 50% at 20% -10%,
+            rgba(124, 58, 237, 0.18) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 80% 110%,
+            rgba(0, 229, 255, 0.12) 0%,
+            transparent 60%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 1.2rem 0;
+        transition: var(--transition);
+      }
+      nav.scrolled {
+        background: rgba(8, 12, 20, 0.85);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        padding: 0.8rem 0;
+      }
+      .nav__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav__logo {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1.6rem;
+        color: var(--white);
+        text-decoration: none;
+        letter-spacing: -1px;
+      }
+      .nav__logo span {
+        color: var(--accent);
+      }
+      .nav__links {
+        display: flex;
+        list-style: none;
+        gap: 2.5rem;
+        align-items: center;
+      }
+      .nav__links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: var(--transition);
+        position: relative;
+      }
+      .nav__links a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        border-radius: 2px;
+        transition: var(--transition);
+      }
+      .nav__links a:hover {
+        color: var(--white);
+      }
+      .nav__links a:hover::after,
+      .nav__links a.active::after {
+        width: 100%;
+      }
+      .nav__links a.active {
+        color: var(--accent);
+      }
+      .nav__cta {
+        background: var(--accent);
+        color: var(--bg) !important;
+        padding: 0.6rem 1.4rem !important;
+        border-radius: 50px;
+        font-weight: 700 !important;
+      }
+      .nav__cta::after {
+        display: none !important;
+      }
+      .nav__user {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+      }
+      .nav__user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent2), var(--accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--white);
+        cursor: pointer;
+        border: 2px solid var(--border);
+        transition: var(--transition);
+      }
+      .nav__user-avatar:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+      }
+      .nav__user-name {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--white);
+      }
+      .nav__dropdown {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        background: var(--bg1);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        min-width: 160px;
+        padding: 0.5rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: var(--transition);
+      }
+      .nav__dropdown.open {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(0);
+      }
+      .nav__dropdown a,
+      .nav__dropdown button {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        width: 100%;
+        padding: 0.55rem 0.9rem;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        color: var(--muted);
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: var(--transition);
+        font-family: "DM Sans", sans-serif;
+      }
+      .nav__dropdown a:hover,
+      .nav__dropdown button:hover {
+        background: rgba(0, 229, 255, 0.07);
+        color: var(--white);
+      }
+      .nav__dropdown .logout-btn {
+        color: rgba(249, 115, 22, 0.75);
+      }
+      .nav__dropdown .logout-btn:hover {
+        background: rgba(249, 115, 22, 0.1);
+        color: var(--accent3);
+      }
+      .nav__toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      /* Contact Page */
+      .contact-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 8rem 0 4rem;
+        position: relative;
+        z-index: 1;
+      }
+      .contact__grid {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 4rem;
+        align-items: start;
+      }
+
+      /* Info Side */
+      .contact-info .badge {
+        display: inline-block;
+        background: rgba(124, 58, 237, 0.1);
+        border: 1px solid rgba(124, 58, 237, 0.25);
+        color: #a78bfa;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 0.35rem 1rem;
+        border-radius: 50px;
+        margin-bottom: 1.2rem;
+      }
+      .contact-info h1 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -2px;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+      }
+      .contact-info h1 span {
+        color: var(--accent);
+      }
+      .contact-info > p {
+        color: var(--muted);
+        margin-bottom: 3rem;
+        font-size: 1rem;
+        max-width: 380px;
+      }
+
+      .contact-details {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        margin-bottom: 3rem;
+      }
+      .contact-detail {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.2rem 1.5rem;
+        background: var(--bg1);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        transition: var(--transition);
+      }
+      .contact-detail:hover {
+        border-color: rgba(0, 229, 255, 0.3);
+        transform: translateX(5px);
+      }
+      .contact-detail-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(0, 229, 255, 0.1);
+        border: 1px solid rgba(0, 229, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .contact-detail-text span {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+      }
+      .contact-detail-text strong {
+        font-size: 0.92rem;
+        font-weight: 500;
+      }
+
+      .contact-socials {
+        display: flex;
+        gap: 0.7rem;
+      }
+      .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 1rem;
+        text-decoration: none;
+        transition: var(--transition);
+      }
+      .social-link:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(0, 229, 255, 0.05);
+        transform: translateY(-3px);
+      }
+
+      /* Form Side */
+      .contact-form-wrap {
+        background: var(--bg1);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+      }
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        color: var(--white);
+        padding: 0.9rem 1.2rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        outline: none;
+        transition: var(--transition);
+        font-family: "DM Sans", sans-serif;
+        resize: none;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
+      }
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: rgba(240, 244, 255, 0.3);
+      }
+      .submit-btn {
+        width: 100%;
+        background: var(--accent);
+        color: var(--bg);
+        padding: 1rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: none;
+        cursor: pointer;
+        transition: var(--transition);
+        font-family: "DM Sans", sans-serif;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .submit-btn:hover {
+        background: #33eaff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4);
+      }
+      .submit-btn.sent {
+        background: #00e580;
+        color: #fff;
+      }
+
+      .form-success {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+        animation: fadeUp 0.5s ease;
+      }
+      .form-success i {
+        font-size: 3rem;
+        color: #00e580;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      .form-success h3 {
+        font-family: "Syne", sans-serif;
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+      }
+      .form-success p {
+        color: var(--muted);
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      footer {
+        background: var(--bg1);
+        border-top: 1px solid var(--border);
+        padding: 2rem 0;
+        position: relative;
+        z-index: 1;
+      }
+      .footer__bottom {
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      @media (max-width: 900px) {
+        .contact__grid {
+          grid-template-columns: 1fr;
+        }
+        .contact-page {
+          padding-top: 7rem;
+        }
+      }
+      @media (max-width: 768px) {
+        .nav__links {
+          display: none;
+          flex-direction: column;
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 280px;
+          background: rgba(13, 20, 37, 0.98);
+          backdrop-filter: blur(30px);
+          padding: 6rem 2rem 2rem;
+          border-left: 1px solid var(--border);
+        }
+        .nav__links.open {
+          display: flex;
+        }
+        .nav__toggle {
+          display: block;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        .contact-form-wrap {
+          padding: 2rem 1.5rem;
+        }
+      }
+
+      .toast {
+        position: fixed;
+        top: 90px;
+        right: 20px;
+
+        padding: 0.85rem 1.3rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        z-index: 9999;
+
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+
+        transform: translateX(120%);
+        transition: var(--transition);
+        max-width: 320px;
+
+        opacity: 0.9;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      .toast.error {
+        background: rgba(249, 115, 22, 0.12);
+        border: 1px solid rgba(249, 115, 22, 0.35);
+        color: #f97316;
+      }
+
+      .toast.success {
+        background: rgba(0, 191, 143, 0.15);
+        border: 1px solid rgba(0, 191, 143, 0.4);
+        color: #00bf8f;
+      }
+
+      .input-error {
+        border-color: rgba(249, 115, 22, 0.5) !important;
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.08) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="navbar">
+      <div class="nav__container">
+        <a href="index.html" class="nav__logo">EDU<span>.</span></a>
+        <ul class="nav__links" id="navLinks">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="coaching.html">Coaching</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+          <li id="navAuthArea"></li>
+        </ul>
+        <button class="nav__toggle" id="navToggle">
+          <i class="uil uil-bars" id="menuIcon"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div class="contact-page">
+      <div class="container">
+        <div class="contact__grid">
+          <div class="contact-info">
+            <h1>Let's <span>Talk</span> About Your Future</h1>
+            <p>
+              Have questions about our courses or coaching? Our team is ready to
+              help you find the perfect learning path.
+            </p>
+
+            <div class="contact-details">
+              <div class="contact-detail">
+                <div class="contact-detail-icon">
+                  <i class="uil uil-phone"></i>
+                </div>
+                <div class="contact-detail-text">
+                  <span>Phone</span>
+                  <strong>+20335523456789</strong>
+                </div>
+              </div>
+              <div class="contact-detail">
+                <div class="contact-detail-icon">
+                  <i class="uil uil-envelope"></i>
+                </div>
+                <div class="contact-detail-text">
+                  <span>Email</span>
+                  <strong>support@eduplatform.com</strong>
+                </div>
+              </div>
+              <div class="contact-detail">
+                <div class="contact-detail-icon">
+                  <i class="uil uil-location-point"></i>
+                </div>
+                <div class="contact-detail-text">
+                  <span>Location</span>
+                  <strong>Egypt ,Cairo</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-socials">
+              <a href="https://facebook.com" class="social-link" target="_blank"
+                ><i class="uil uil-facebook-f"></i
+              ></a>
+              <a
+                href="https://instagram.com"
+                class="social-link"
+                target="_blank"
+                ><i class="uil uil-instagram"></i
+              ></a>
+              <a href="https://twitter.com" class="social-link" target="_blank"
+                ><i class="uil uil-twitter-alt"></i
+              ></a>
+              <a href="https://linkedin.com" class="social-link" target="_blank"
+                ><i class="uil uil-linkedin-alt"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="contact-form-wrap">
+            <div id="formContent">
+              <h3
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  font-size: 1.5rem;
+                  font-weight: 800;
+                  letter-spacing: -0.5px;
+                  margin-bottom: 0.4rem;
+                "
+              >
+                Send a Message
+              </h3>
+              <p
+                style="
+                  color: var(--muted);
+                  font-size: 0.9rem;
+                  margin-bottom: 2rem;
+                "
+              >
+                We usually respond within 24 hours.
+              </p>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" id="firstName" placeholder="Mostafa" />
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" id="lastName" placeholder="Mohamed" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  id="emailAddr"
+                  placeholder="EDU@example.com"
+                />
+              </div>
+              <div class="form-group">
+                <label>Subject</label>
+                <input
+                  type="text"
+                  id="subject"
+                  placeholder="How can we help you?"
+                />
+              </div>
+              <div class="form-group">
+                <label>Message</label>
+                <textarea
+                  id="message"
+                  rows="5"
+                  placeholder="Tell us about your learning goals..."
+                ></textarea>
+              </div>
+              <button class="submit-btn" id="submitBtn" onclick="sendMessage()">
+                <i class="uil uil-message"></i> Send Message
+              </button>
+            </div>
+
+            <div class="form-success" id="formSuccess">
+              <i class="uil uil-check-circle"></i>
+              <h3>Message Sent!</h3>
+              <p>
+                Thank you for reaching out. We'll get back to you within 24
+                hours.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="footer__bottom">
+          © 2026 EDU Platform. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () =>
+        navbar.classList.toggle("scrolled", window.scrollY > 50),
+      );
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+      const menuIcon = document.getElementById("menuIcon");
+      navToggle.addEventListener("click", () => {
+        const open = navLinks.classList.toggle("open");
+        menuIcon.className = open ? "uil uil-multiply" : "uil uil-bars";
+      });
+
+      (function renderNavAuth() {
+        const area = document.getElementById("navAuthArea");
+        const user = JSON.parse(localStorage.getItem("currentUser") || "null");
+        if (user) {
+          const initials = user.name
+            .split(" ")
+            .map((w) => w[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+          area.innerHTML = `<div class="nav__user"><div class="nav__user-avatar" id="userAvatarBtn">${initials}</div><span class="nav__user-name">Hi, ${user.name.split(" ")[0]}</span><div class="nav__dropdown" id="navDropdown"><a href="profile.html"><i class="uil uil-user-circle"></i> My Profile</a><button class="logout-btn" onclick="logout()"><i class="uil uil-sign-out-alt"></i> Logout</button></div></div>`;
+          document
+            .getElementById("userAvatarBtn")
+            .addEventListener("click", (e) => {
+              e.stopPropagation();
+              document.getElementById("navDropdown").classList.toggle("open");
+            });
+          document.addEventListener("click", () =>
+            document.getElementById("navDropdown")?.classList.remove("open"),
+          );
+        } else {
+          area.innerHTML = `<a href="login.html" class="nav__cta">Login</a>`;
+        }
+      })();
+      function logout() {
+        localStorage.removeItem("currentUser");
+        window.location.reload();
+      }
+
+      function showToast(msg, type = "error") {
+        const t = document.getElementById("toast");
+        const icon =
+          type === "success" ? "uil-check-circle" : "uil-exclamation-circle";
+
+        t.innerHTML = `<i class="uil ${icon}"></i> ${msg}`;
+        t.className = `toast ${type} show`;
+
+        setTimeout(() => t.classList.remove("show"), 3000);
+      }
+
+      function setError(input, msg) {
+        input.classList.add("input-error");
+        showToast(msg, "error");
+      }
+
+      function clearErrors(inputs) {
+        inputs.forEach((i) => i.classList.remove("input-error"));
+      }
+
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      function sendMessage() {
+        const firstName = document.getElementById("firstName");
+        const lastName = document.getElementById("lastName");
+        const email = document.getElementById("emailAddr");
+        const subject = document.getElementById("subject");
+        const message = document.getElementById("message");
+
+        const inputs = [firstName, lastName, email, subject, message];
+
+        // reset errors
+        inputs.forEach((i) => i.classList.remove("input-error"));
+
+        let hasError = false;
+        let emailError = false;
+
+        // check empty fields
+        inputs.forEach((input) => {
+          if (input.value.trim() === "") {
+            input.classList.add("input-error");
+            hasError = true;
+          }
+        });
+
+        // email format check
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email.value.trim() !== "" && !emailPattern.test(email.value)) {
+          email.classList.add("input-error");
+          emailError = true;
+        }
+
+        // show ONE toast only
+        if (hasError) {
+          showToast("Please complete all required fields", "error");
+          return;
+        }
+
+        if (emailError) {
+          showToast("Please enter a valid email address", "error");
+          return;
+        }
+
+        // success state
+        const btn = document.getElementById("submitBtn");
+        btn.innerHTML =
+          '<i class="uil uil-spinner-alt" style="animation:spin 1s linear infinite"></i> Sending...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+          document.getElementById("formContent").style.display = "none";
+          document.getElementById("formSuccess").style.display = "block";
+
+          showToast("Message sent successfully!", "success");
+        }, 1200);
+      }
+      const style = document.createElement("style");
+      style.textContent =
+        "@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}";
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>
